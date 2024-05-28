@@ -13,6 +13,12 @@ use App\Http\Controllers\Admin\SiswaController as AdminSiswaController;
 use App\Http\Controllers\Admin\SoalController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Guru\GuruController;
+use App\Http\Controllers\Siswa\GuruController as SiswaGuruController;
+use App\Http\Controllers\Siswa\JurusanController as SiswaJurusanController;
+use App\Http\Controllers\Siswa\KelasController as SiswaKelasController;
+use App\Http\Controllers\Siswa\KuisController as SiswaKuisController;
+use App\Http\Controllers\Siswa\MataPelajaranController as SiswaMataPelajaranController;
+use App\Http\Controllers\Siswa\PertemuanController as SiswaPertemuanController;
 use App\Http\Controllers\Siswa\SiswaController;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
@@ -119,7 +125,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('soal/data', 'getData')->name('admin/soal/data');
             Route::get('kuis/view/{id}/soal/add', 'create')->name('admin/soal/add');
             Route::post('kuis/view/{id}/soal/add', 'store')->name('admin/soal/add_store');
-            Route::get('kuis/view/{id}/soal/edit/{id}', 'edit')->name('admin/soal/edit');
+            Route::get('kuis/view/{id}/soal/edit/{idk}', 'edit')->name('admin/soal/edit');
             Route::post('kuis/view/{id}/soal/edit', 'update')->name('admin/soal/edit_update');
             Route::post('kuis/view/{id}/soal/delete', 'destroy')->name('admin/soal/delete');
         });
@@ -159,14 +165,49 @@ Route::middleware(['auth'])->group(function () {
     Route::group(['prefix' => 'guru', 'middleware' => 'role:guru'], function(){
         Route::redirect('/', 'guru/dashboard');
         Route::controller(GuruController::class)->group(function(){
-
+            Route::get('dashboard','index')->name('guru/dashboard');
+            Route::get('profile','profile')->name('guru/profile');
+            Route::post('/profile/edit', 'edit')->name('guru/profile/edit');
+            Route::post('/profile/edit/tentang', 'update')->name('guru/profile/edit/tentang');
         });
     });
 
     Route::group(['prefix' => 'siswa', 'middleware' => 'role:siswa'], function(){
         Route::redirect('/', 'siswa/dashboard');
         Route::controller(SiswaController::class)->group(function(){
-
+            Route::get('dashboard','index')->name('siswa/dashboard');
+            Route::get('profile','profile')->name('siswa/profile');
+            Route::post('/profile/edit', 'edit')->name('siswa/profile/edit');
+            Route::post('/profile/edit/tentang', 'update')->name('siswa/profile/edit/tentang');
+        });
+        Route::controller(SiswaKelasController::class)->group(function(){
+            Route::get('kelas', 'index')->name('siswa/kelas');
+            Route::get('kelas/data', 'getData')->name('siswa/kelas/data');
+        });
+        Route::controller(SiswaGuruController::class)->group(function(){
+            Route::get('guru', 'index')->name('siswa/guru');
+            Route::get('guru/data', 'getData')->name('siswa/guru/data');
+            Route::get('guru/profile/{id}', 'show')->name('siswa/guru/profile');
+        });
+        Route::controller(SiswaJurusanController::class)->group(function(){
+            Route::get('jurusan', 'index')->name('siswa/jurusan');
+            Route::get('jurusan/data', 'getData')->name('siswa/jurusan/data');
+        });
+        Route::controller(SiswaKuisController::class)->group(function(){
+            Route::get('kuis', 'index')->name('siswa/kuis');
+            Route::get('kuis/kerjakan/{id}', 'show')->name('siswa/kuis/kerjakan');
+            Route::get('kuis/kerjakan/{id}/soal', 'soal')->name('siswa/kuis/kerjakan/soal');
+            Route::post('kuis/kerjakan/submit/{id}', 'submit')->name('siswa/kuis/kerjakan/submit');
+            Route::get('kuis/hasil/{id}', 'hasil')->name('siswa/kuis/hasil');
+        });
+        Route::controller(SiswaMataPelajaranController::class)->group(function(){
+            Route::get('mapel', 'index')->name('siswa/mapel');
+            Route::get('mapel/data', 'getData')->name('siswa/mapel/data');
+        });
+        Route::controller(SiswaPertemuanController::class)->group(function(){
+            Route::get('pertemuan', 'index')->name('siswa/pertemuan');
+            Route::get('pertemuan/data', 'getData')->name('siswa/pertemuan/data');
+            Route::get('pertemuan/{id}', 'show')->name('siswa/pertemuan/');
         });
     });
 });

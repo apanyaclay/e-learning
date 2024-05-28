@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Jadwal;
+use App\Models\Materi;
+use App\Models\Pertemuan;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -38,7 +42,9 @@ class PertemuanController extends Controller
                 ->join('jadwals', 'pertemuans.jadwal_id', '=', 'jadwals.id')
                 ->join('kelas', 'jadwals.kelas_id', '=', 'kelas.id')
                 ->join('jurusans', 'jadwals.jurusan_id', '=', 'jurusans.id')
-                ->select('pertemuans.*', 'materis.nama as materi_nama', 'kelas.nama as kelas_nama', 'jurusans.nama as jurusan_nama');
+                ->join('e-books', 'materis.ebook_id', '=', 'e-books.id')
+                ->join('gurus', 'e-books.guru_nuptk', '=', 'gurus.nuptk')
+                ->select('pertemuans.*', 'materis.nama as materi_nama', 'kelas.nama as kelas_nama', 'jurusans.nama as jurusan_nama', 'gurus.nama as guru_nama');
         $totalRecords = $data->count();
 
         $totalRecordsWithFilter = $data->where(function ($query) use ($searchValue) {
@@ -83,7 +89,8 @@ class PertemuanController extends Controller
                 "kelas"             => $record->kelas_nama,
                 "jurusan"           => $record->jurusan_nama,
                 "materi"            => $record->materi_nama,
-                "created_at"            => $record->created_at,
+                "guru"              => $record->guru_nama,
+                "created_at"        => $record->created_at,
                 "modify"            => $modify,
             ];
         }
@@ -102,7 +109,13 @@ class PertemuanController extends Controller
      */
     public function create()
     {
-        //
+        $materi = Materi::all();
+        $jadwal = Jadwal::all();
+        return view('admin.pertemuan.add', [
+            'title' => 'Tambah Pertemuan',
+            'materi'=> $materi,
+            'jadwal'=> $jadwal
+        ]);
     }
 
     /**
@@ -110,7 +123,26 @@ class PertemuanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'pertemuan'=> 'required',
+            'materi_id'=> 'required',
+            'jadwal_id'=> 'required',
+        ]);
+        DB::beginTransaction();
+        try {
+            Pertemuan::create([
+                'pertemuan'=> $request->pertemuan,
+                'materi_id'=> $request->materi_id,
+                'jadwal_id'=> $request->jadwal_id,
+            ]);
+            DB::commit();
+            Toastr::success('Pertemuan berhasil ditambahkan :)','Success');
+            return redirect()->route('admin/pertemuan');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            Toastr::error('Pertemuan gagal ditambahkan :(', 'Error');
+            return redirect()->back();
+        }
     }
 
     /**
@@ -124,24 +156,58 @@ class PertemuanController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $materi = Materi::all();
+        $jadwal = Jadwal::all();
+        $pertemuan = Pertemuan::findOrFail($id);
+        return view('admin.pertemuan.edit', [
+            'title' => 'Edit Pertemuan',
+            'materi'=> $materi,
+            'jadwal'=> $jadwal,
+            'pertemuan'=> $pertemuan,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $updateRecord = [
+                'pertemuan'=> $request->pertemuan,
+                'materi_id'=> $request->materi_id,
+                'jadwal_id'=> $request->jadwal_id,
+            ];
+            Pertemuan::where('id', $request->id)->update($updateRecord);
+            DB::commit();
+            Toastr::success('Pertemuan berhasil ditambahkan :)','Success');
+            return redirect()->route('admin/pertemuan');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            Toastr::error('Pertemuan gagal ditambahkan :(', 'Error');
+            return redirect()->back();
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        DB::beginTransaction();
+        try {
+            Pertemuan::destroy($request->id);
+            DB::commit();
+            Toastr::success('Pertemuan deleted successfully :)','Success');
+            return redirect()->back();
+
+        } catch(\Exception $e) {
+            DB::rollback();
+            Toastr::error('Pertemuan deleted fail :)','Error');
+            return redirect()->back();
+        }
     }
 }

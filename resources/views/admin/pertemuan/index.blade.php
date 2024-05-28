@@ -46,6 +46,7 @@
                                                             <th>Kelas</th>
                                                             <th>Jurusan</th>
                                                             <th>Materi</th>
+                                                            <th>Guru</th>
                                                             <th>Tanggal</th>
                                                             <th class="text-end">Aksi</th>
                                                         </tr>
@@ -125,6 +126,10 @@
                     {
                         data: 'materi',
                         name: 'materi',
+                    },
+                    {
+                        data: 'guru',
+                        name: 'guru',
                     },
                     {
                         data: 'created_at',

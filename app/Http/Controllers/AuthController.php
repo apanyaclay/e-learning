@@ -93,7 +93,7 @@ class AuthController extends Controller
             $user->password = Hash::make($request->new_password);
             $user->save();
             Toastr::success('Berhasil mengubah kata sandi :)','Success');
-            return redirect()->route('home');
+            return redirect()->back();
         } else {
             Toastr::error('Kata Sandi lama salah','Error');
             return redirect()->back();

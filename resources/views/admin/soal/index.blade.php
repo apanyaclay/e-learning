@@ -39,7 +39,6 @@
                                                     <thead class="student-thread">
                                                         <tr>
                                                             <th>No</th>
-                                                            <th>Foto</th>
                                                             <th>Pertanyaan</th>
                                                             <th>Kunci Jawaban</th>
                                                             <th>Bobot</th>
@@ -50,13 +49,12 @@
                                                         @foreach ($soal as $index => $value)
                                                         <tr>
                                                             <td>{{$index + 1}}</td>
-                                                            <td>{{ $value['foto'] }}</td>
                                                             <td>{{ $value['pertanyaan'] }}</td>
                                                             <td>{{ $value['opsi_benar'] }}</td>
                                                             <td>{{ $value['bobot'] }}</td>
                                                             <td class="text-end">
                                                                 <div class="actions">
-                                                                    <a href="{{url('admin/soal/edit/'.$value['id'])}}" class="btn btn-sm bg-danger-light">
+                                                                    <a href="{{url('admin/kuis/view/'.$id.'/soal/edit/'.$value['id'])}}" class="btn btn-sm bg-danger-light">
                                                                         <i class="far fa-edit me-2"></i>
                                                                     </a>
                                                                     <a class="btn btn-sm bg-danger-light delete data_id" data-bs-toggle="modal" data-id="{{$value['id']}}" data-bs-target="#delete">

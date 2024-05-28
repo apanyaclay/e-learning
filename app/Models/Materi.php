@@ -13,4 +13,9 @@ class Materi extends Model
         'nama',
         'description',
     ];
+
+    public function ebook()
+    {
+        return $this->belongsTo(Ebook::class, 'ebook_id', 'id');
+    }
 }

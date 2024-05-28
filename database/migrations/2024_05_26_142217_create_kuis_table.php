@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->timestamp('tenggat');
+            $table->timestamp('mulai')->nullable();
             $table->unsignedBigInteger('durasi');
             $table->foreignId('pertemuan_id')->constrained()->onDelete('cascade');
             $table->integer('guru_nuptk')->length(10);

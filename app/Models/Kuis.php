@@ -13,7 +13,17 @@ class Kuis extends Model
         'nama',
         'tenggat',
         'durasi',
+        'mulai',
         'pertemuan_id',
         'guru_nuptk',
     ];
+
+    public function guru()
+    {
+        return $this->belongsTo(Guru::class, 'guru_nuptk', 'nuptk');
+    }
+    public function pertemuan()
+    {
+        return $this->belongsTo(Pertemuan::class, 'pertemuan_id', 'id');
+    }
 }

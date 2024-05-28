@@ -17,11 +17,12 @@
     <link rel="stylesheet" href="{{ URL::to('assets/plugins/datatables/datatables.min.css') }}">
     <link rel="stylesheet" href="{{ URL::to('assets/plugins/select2/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ URL::to('assets/css/style.css') }}">
-	{{-- message toastr --}}
-	<link rel="stylesheet" href="{{ URL::to('assets/css/toastr.min.css') }}">
-	<script src="{{ URL::to('assets/js/toastr_jquery.min.js') }}"></script>
-	<script src="{{ URL::to('assets/js/toastr.min.js') }}"></script>
+    {{-- message toastr --}}
+    <link rel="stylesheet" href="{{ URL::to('assets/css/toastr.min.css') }}">
+    <script src="{{ URL::to('assets/js/toastr_jquery.min.js') }}"></script>
+    <script src="{{ URL::to('assets/js/toastr.min.js') }}"></script>
 </head>
+
 <body>
     <div class="main-wrapper">
         <div class="header">
@@ -64,7 +65,8 @@
                                     <a href="#">
                                         <div class="media d-flex">
                                             <span class="avatar avatar-sm flex-shrink-0">
-                                                <img class="avatar-img rounded-circle" alt="User Image" src="{{ URL::to('assets/img/logo-small.png') }}">
+                                                <img class="avatar-img rounded-circle" alt="User Image"
+                                                    src="{{ URL::to('assets/img/logo-small.png') }}">
                                             </span>
                                             <div class="media-body flex-grow-1">
                                                 <p class="noti-details"><span class="noti-title">Carlson Tech</span> has
@@ -79,11 +81,13 @@
                                     <a href="#">
                                         <div class="media d-flex">
                                             <span class="avatar avatar-sm flex-shrink-0">
-                                                <img class="avatar-img rounded-circle" alt="User Image" src="{{ URL::to('assets/img/logo-small.png') }}">
+                                                <img class="avatar-img rounded-circle" alt="User Image"
+                                                    src="{{ URL::to('assets/img/logo-small.png') }}">
                                             </span>
                                             <div class="media-body flex-grow-1">
                                                 <p class="noti-details">
-                                                    <span class="noti-title">International Software Inc</span> has sent you a invoice in the amount of
+                                                    <span class="noti-title">International Software Inc</span> has sent
+                                                    you a invoice in the amount of
                                                     <span class="noti-title">$218</span>
                                                 </p>
                                                 <p class="noti-time">
@@ -97,10 +101,13 @@
                                     <a href="#">
                                         <div class="media d-flex">
                                             <span class="avatar avatar-sm flex-shrink-0">
-                                                <img class="avatar-img rounded-circle" alt="User Image" src="{{ URL::to('assets/img/logo-small.png') }}">
+                                                <img class="avatar-img rounded-circle" alt="User Image"
+                                                    src="{{ URL::to('assets/img/logo-small.png') }}">
                                             </span>
                                             <div class="media-body flex-grow-1">
-                                                <p class="noti-details"><span class="noti-title">John Hendry</span> sent a cancellation request <span class="noti-title">Apple iPhone XR</span></p>
+                                                <p class="noti-details"><span class="noti-title">John Hendry</span>
+                                                    sent a cancellation request <span class="noti-title">Apple iPhone
+                                                        XR</span></p>
                                                 <p class="noti-time"><span class="notification-time">8 mins ago</span>
                                                 </p>
                                             </div>
@@ -111,11 +118,15 @@
                                     <a href="#">
                                         <div class="media d-flex">
                                             <span class="avatar avatar-sm flex-shrink-0">
-                                                <img class="avatar-img rounded-circle" alt="User Image" src="{{ URL::to('assets/img/logo-small.png') }}">
+                                                <img class="avatar-img rounded-circle" alt="User Image"
+                                                    src="{{ URL::to('assets/img/logo-small.png') }}">
                                             </span>
                                             <div class="media-body flex-grow-1">
-                                                <p class="noti-details"><span class="noti-title">Mercury Software Inc</span> added a new product <span class="noti-title">Apple MacBook Pro</span></p>
-                                                <p class="noti-time"><span class="notification-time">12 mins ago</span>
+                                                <p class="noti-details"><span class="noti-title">Mercury Software
+                                                        Inc</span> added a new product <span class="noti-title">Apple
+                                                        MacBook Pro</span></p>
+                                                <p class="noti-time"><span class="notification-time">12 mins
+                                                        ago</span>
                                                 </p>
                                             </div>
                                         </div>
@@ -138,58 +149,56 @@
                 <li class="nav-item dropdown has-arrow new-user-menus">
                     <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
                         <span class="user-img">
-                            <img class="rounded-circle" src="@if (Auth::user()->role == 'admin')
-                            {{ Storage::url('foto/'.Auth::user()->admin->foto) }}" width="31"alt="{{ Auth::user()->username }}
+                            <img class="rounded-circle"
+                                src="@if (Auth::user()->role == 'admin') {{ Storage::url('foto/' . Auth::user()->admin->foto) }}" width="31"alt="{{ Auth::user()->username }}
                             @elseif (Auth::user()->role == 'guru')
-                            {{ Storage::url('foto/'.Auth::user()->guru->foto) }}" width="31"alt="{{ Auth::user()->username }}
+                            {{ Storage::url('foto/' . Auth::user()->guru->foto) }}" width="31"alt="{{ Auth::user()->username }}
                             @else
-                            {{ Storage::url('foto/'.Auth::user()->siswa->foto) }}" width="31"alt="{{ Auth::user()->username }}
-                            @endif" width="31"alt="{{Auth::user()->username}}">
+                            {{ Storage::url('foto/' . Auth::user()->siswa->foto) }}" width="31"alt="{{ Auth::user()->username }} @endif"
+                                width="31"alt="{{ Auth::user()->username }}">
                             <div class="user-text">
-                                <h6>{{Auth::user()->username}}</h6>
-                                <p class="text-muted mb-0">{{ucfirst(Auth::user()->role)}}</p>
+                                <h6>{{ Auth::user()->username }}</h6>
+                                <p class="text-muted mb-0">{{ ucfirst(Auth::user()->role) }}</p>
                             </div>
                         </span>
                     </a>
                     <div class="dropdown-menu">
                         <div class="user-header">
                             <div class="avatar avatar-sm">
-                                <img src="@if (Auth::user()->role == 'admin')
-                                {{ Storage::url('foto/'.Auth::user()->admin->foto) }}" width="31"alt="{{ Auth::user()->username }}
+                                <img src="@if (Auth::user()->role == 'admin') {{ Storage::url('foto/' . Auth::user()->admin->foto) }}" width="31"alt="{{ Auth::user()->username }}
                                 @elseif (Auth::user()->role == 'guru')
-                                {{ Storage::url('foto/'.Auth::user()->guru->foto) }}" width="31"alt="{{ Auth::user()->username }}
+                                {{ Storage::url('foto/' . Auth::user()->guru->foto) }}" width="31"alt="{{ Auth::user()->username }}
                                 @else
-                                {{ Storage::url('foto/'.Auth::user()->siswa->foto) }}" width="31"alt="{{ Auth::user()->username }}
-                                @endif" alt="{{Auth::user()->username}}" class="avatar-img rounded-circle">
+                                {{ Storage::url('foto/' . Auth::user()->siswa->foto) }}" width="31"alt="{{ Auth::user()->username }} @endif"
+                                    alt="{{ Auth::user()->username }}" class="avatar-img rounded-circle">
                             </div>
                             <div class="user-text">
-                                <h6>{{Auth::user()->username}}</h6>
-                                <p class="text-muted mb-0">{{ucfirst(Auth::user()->role)}}</p>
+                                <h6>{{ Auth::user()->username }}</h6>
+                                <p class="text-muted mb-0">{{ ucfirst(Auth::user()->role) }}</p>
                             </div>
                         </div>
-                        <a class="dropdown-item" href="@if (Auth::user()->role=='admin')
-                            {{route('admin/profile')}}
-                        @elseif (Auth::user()->role=='guru')
-                            {{route('guru/profile')}}
+                        <a class="dropdown-item"
+                            href="@if (Auth::user()->role == 'admin') {{ route('admin/profile') }}
+                        @elseif (Auth::user()->role == 'guru')
+                            {{ route('guru/profile') }}
                         @else
-                            {{route('siswa/profile')}}
-                        @endif">My Profile</a>
-                        <a class="dropdown-item" href="{{route('home')}}">Inbox</a>
+                            {{ route('siswa/profile') }} @endif">My
+                            Profile</a>
+                        <a class="dropdown-item" href="{{ route('home') }}">Inbox</a>
                         <a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
                     </div>
                 </li>
             </ul>
         </div>
-		{{-- side bar --}}
-		@include('layouts.sidebar')
-		{{-- content page --}}
+        {{-- side bar --}}
+        @include('layouts.sidebar')
+        {{-- content page --}}
         {!! Toastr::message() !!}
         @yield('content')
         <footer>
-            <p>Copyright ©  <?php echo date('Y'); ?> {{config('app.name')}}. All rights reserved.</p>
+            <p>Copyright © <?php echo date('Y'); ?> {{ config('app.name') }}. All rights reserved.</p>
 
         </footer>
-
     </div>
 
     <script src="{{ URL::to('assets/js/jquery-3.6.0.min.js') }}"></script>
@@ -215,4 +224,5 @@
         });
     </script>
 </body>
+
 </html>
