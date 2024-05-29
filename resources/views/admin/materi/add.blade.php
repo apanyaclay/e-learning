@@ -59,7 +59,7 @@
                                     <div class="col-12 col-sm-4">
                                         <div class="form-group local-forms">
                                             <label>E-Book <span class="login-danger">*</span></label>
-                                            <select class="form-control select  @error('ebooks_id') is-invalid @enderror"
+                                            <select class="form-control select  @error('ebooks_id') is-invalid @enderror" id="ebooks_id"
                                                 name="ebooks_id">
                                                 <option selected disabled>Pilih E-Book</option>
                                                 @foreach ($ebook as $value)
@@ -88,4 +88,9 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#ebooks_id').select2();
+        });
+    </script>
 @endsection

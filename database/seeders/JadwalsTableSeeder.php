@@ -20,6 +20,7 @@ class JadwalsTableSeeder extends Seeder
             "hari"=> "Senin",
             "jam_mulai"=> "08:00",
             "jam_selesai"=> "09:00",
+            "tahun_ajaran_id"=> "1",
         ]);
         Jadwal::create([
             "kelas_id"=> "2",
@@ -28,6 +29,7 @@ class JadwalsTableSeeder extends Seeder
             "hari"=> "Selasa",
             "jam_mulai"=> "08:00",
             "jam_selesai"=> "09:00",
+            "tahun_ajaran_id"=> "1",
         ]);
         Jadwal::create([
             "kelas_id"=> "3",
@@ -36,6 +38,7 @@ class JadwalsTableSeeder extends Seeder
             "hari"=> "Senin",
             "jam_mulai"=> "07:00",
             "jam_selesai"=> "08:00",
+            "tahun_ajaran_id"=> "1",
         ]);
         Jadwal::create([
             "kelas_id"=> "1",
@@ -44,6 +47,7 @@ class JadwalsTableSeeder extends Seeder
             "hari"=> "Senin",
             "jam_mulai"=> "07:00",
             "jam_selesai"=> "08:00",
+            "tahun_ajaran_id"=> "1",
         ]);
         Jadwal::create([
             "kelas_id"=> "2",
@@ -52,6 +56,7 @@ class JadwalsTableSeeder extends Seeder
             "hari"=> "Senin",
             "jam_mulai"=> "07:00",
             "jam_selesai"=> "08:00",
+            "tahun_ajaran_id"=> "1",
         ]);
         Jadwal::create([
             "kelas_id"=> "3",
@@ -60,6 +65,7 @@ class JadwalsTableSeeder extends Seeder
             "hari"=> "Senin",
             "jam_mulai"=> "07:00",
             "jam_selesai"=> "08:00",
+            "tahun_ajaran_id"=> "1",
         ]);
     }
 }

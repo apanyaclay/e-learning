@@ -10,7 +10,7 @@ class Nilai extends Model
     use HasFactory;
     protected $fillable = [
         "nilai",
-        "user_id",
+        "siswa_nisn",
         "kuis_id",
     ];
 }

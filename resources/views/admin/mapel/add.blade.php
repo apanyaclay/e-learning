@@ -58,7 +58,7 @@
                                     <div class="col-12 col-sm-4">
                                         <div class="form-group local-forms">
                                             <label>Guru <span class="login-danger">*</span></label>
-                                            <select class="form-control select  @error('guru_nuptk') is-invalid @enderror"
+                                            <select class="form-control select  @error('guru_nuptk') is-invalid @enderror" id="guru_nuptk"
                                                 name="guru_nuptk">
                                                 <option selected disabled>Pilih Guru</option>
                                                 @foreach ($guru as $value)
@@ -87,4 +87,9 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#guru_nuptk').select2();
+        });
+    </script>
 @endsection

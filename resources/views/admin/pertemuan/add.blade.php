@@ -33,7 +33,7 @@
                                     <div class="col-12 col-sm-4">
                                         <div class="form-group local-forms">
                                             <label>Pertemuan Ke <span class="login-danger">*</span></label>
-                                            <input type="text" class="form-control @error('pertemuan') is-invalid @enderror"
+                                            <input type="number" class="form-control @error('pertemuan') is-invalid @enderror"
                                                 name="pertemuan" placeholder="Masukkan Pertemuan Ke"
                                                 value="{{ old('pertemuan') }}">
                                             @error('pertemuan')
@@ -46,7 +46,7 @@
                                     <div class="col-12 col-sm-4">
                                         <div class="form-group local-forms">
                                             <label>Materi <span class="login-danger">*</span></label>
-                                            <select class="form-control select  @error('materi_id') is-invalid @enderror"
+                                            <select class="form-control select  @error('materi_id') is-invalid @enderror" id="materi_id"
                                                 name="materi_id">
                                                 <option selected disabled>Judul E-Book - Nama Materi - Nama Guru</option>
                                                 @foreach ($materi as $value)
@@ -65,13 +65,13 @@
                                     <div class="col-12 col-sm-4">
                                         <div class="form-group local-forms">
                                             <label>Jadwal <span class="login-danger">*</span></label>
-                                            <select class="form-control select  @error('jadwal_id') is-invalid @enderror"
+                                            <select class="form-control select  @error('jadwal_id') is-invalid @enderror" id="jadwal_id"
                                                 name="jadwal_id">
                                                 <option selected disabled>Pilih Jadwal</option>
                                                 @foreach ($jadwal as $value)
                                                     <option value="{{ $value->id }}"
                                                         {{ old('jadwal_id') == $value->id ? 'selected' : '' }}>
-                                                        {{ $value->kelas->nama }} - {{ $value->jurusan->nama }} - {{ $value->mataPelajaran->nama }}</option>
+                                                        {{ $value->kelas->nama }} - {{ $value->jurusan->nama }} - {{ $value->mataPelajaran->nama }} - {{ $value->hari }}</option>
                                                 @endforeach
                                             </select>
                                             @error('jadwal_id')
@@ -94,4 +94,9 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#jadwal_id, #materi_id').select2();
+        });
+    </script>
 @endsection

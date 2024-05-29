@@ -9,14 +9,14 @@ class Jawaban extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'user_id',
+        'siswa_nisn',
         'soal_id',
         'jawaban',
     ];
 
-    public function user()
+    public function siswa()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Siswa::class);
     }
 
     public function soal()

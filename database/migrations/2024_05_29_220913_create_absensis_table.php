@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('nilais', function (Blueprint $table) {
+        Schema::create('absensis', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('nilai');
-            $table->foreignId('kuis_id')->constrained();
+            $table->date('tanggal')->unique();
             $table->integer('siswa_nisn')->length(10);
             $table->foreign('siswa_nisn')->references('nisn')->on('siswas')->onDelete('cascade');
+            $table->foreignId('pertemuan_id')->constrained();
+            $table->enum('status', ['Hadir', 'izin', 'Alpa', 'Sakit']);
+            $table->string('keterangan')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('nilais');
+        Schema::dropIfExists('absensis');
     }
 };

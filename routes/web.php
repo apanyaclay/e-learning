@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\Admin\AbsensiController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\EbookController;
 use App\Http\Controllers\Admin\GuruController as AdminGuruController;
+use App\Http\Controllers\Admin\JadwalController;
 use App\Http\Controllers\Admin\JurusanController;
 use App\Http\Controllers\Admin\KelasController;
 use App\Http\Controllers\Admin\KuisController;
@@ -159,7 +161,26 @@ Route::middleware(['auth'])->group(function () {
             Route::get('pertemuan/view/{id}', 'show')->name('admin/pertemuan/view');
             Route::post('pertemuan/delete', 'destroy')->name('admin/pertemuan/delete');
         });
-
+        Route::controller(JadwalController::class)->group(function(){
+            Route::get('jadwal', 'index')->name('admin/jadwal');
+            Route::get('jadwal/data', 'getData')->name('admin/jadwal/data');
+            Route::get('jadwal/add', 'create')->name('admin/jadwal/add');
+            Route::post('jadwal/add', 'store')->name('admin/jadwal/add_store');
+            Route::get('jadwal/edit/{id}', 'edit')->name('admin/jadwal/edit');
+            Route::post('jadwal/edit', 'update')->name('admin/jadwal/edit_update');
+            Route::get('jadwal/profile/{id}', 'show')->name('admin/jadwal/profile');
+            Route::post('jadwal/delete', 'destroy')->name('admin/jadwal/delete');
+        });
+        Route::controller(AbsensiController::class)->group(function(){
+            Route::get('absensi', 'index')->name('admin/absensi');
+            Route::get('absensi/data', 'getData')->name('admin/absensi/data');
+            Route::get('absensi/add', 'create')->name('admin/absensi/add');
+            Route::post('absensi/add', 'store')->name('admin/absensi/add_store');
+            Route::get('absensi/edit/{id}', 'edit')->name('admin/absensi/edit');
+            Route::post('absensi/edit', 'update')->name('admin/absensi/edit_update');
+            Route::get('absensi/profile/{id}', 'show')->name('admin/absensi/profile');
+            Route::post('absensi/delete', 'destroy')->name('admin/absensi/delete');
+        });
     });
 
     Route::group(['prefix' => 'guru', 'middleware' => 'role:guru'], function(){

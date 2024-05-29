@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('jawabans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->integer('siswa_nisn')->length(10);
+            $table->foreign('siswa_nisn')->references('nisn')->on('siswas')->onDelete('cascade');
             $table->foreignId('soal_id')->constrained();
             $table->string('jawaban');
             $table->timestamps();

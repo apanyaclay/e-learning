@@ -19,6 +19,7 @@ return new class extends Migration
             $table->enum('hari', ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu']);
             $table->time('jam_mulai');
             $table->time('jam_selesai');
+            $table->foreignId('tahun_ajaran_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

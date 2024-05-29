@@ -119,6 +119,38 @@
                     </li>
 
                     <li
+                        class="submenu {{ set_active(['admin/jadwal', 'admin/jadwal/add']) }} {{ request()->is('admin/jadwal/edit/*') ? 'active' : '' }}">
+                        <a href="#"><i class="fas fa-book-reader"></i>
+                            <span> Jadwal</span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <ul>
+                            <li><a class="{{ set_active(['admin/jadwal']) }}"href="{{ route('admin/jadwal') }}">Jadwal
+                                    List</a></li>
+                            <li><a class="{{ set_active(['admin/jadwal/add']) }}"href="{{ route('admin/jadwal/add') }}">Jadwal
+                                    Add</a></li>
+                            <li><a class="{{ request()->is('admin/jadwal/edit/*') ? 'active' : '' }}">Jadwal Edit</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li
+                        class="submenu {{ set_active(['admin/absensi', 'admin/absensi/add']) }} {{ request()->is('admin/absensi/edit/*') ? 'active' : '' }}">
+                        <a href="#"><i class="fas fa-book-reader"></i>
+                            <span> Absensi</span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <ul>
+                            <li><a class="{{ set_active(['admin/absensi']) }}"href="{{ route('admin/absensi') }}">Absensi
+                                    List</a></li>
+                            <li><a class="{{ set_active(['admin/absensi/add']) }}"href="{{ route('admin/absensi/add') }}">Absensi
+                                    Add</a></li>
+                            <li><a class="{{ request()->is('admin/absensi/edit/*') ? 'active' : '' }}">Absensi Edit</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li
                         class="submenu {{ set_active(['admin/kuis', 'admin/kuis/add']) }} {{ request()->is('admin/kuis/edit/*') ? 'active' : '' }} {{ request()->is('admin/kuis/view/*') ? 'active' : '' }}">
                         <a href="#"><i class="fas fa-book-reader"></i>
                             <span> Kuis</span>

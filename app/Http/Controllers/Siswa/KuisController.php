@@ -65,7 +65,8 @@ class KuisController extends Controller
     {
         $kuis = Kuis::find($id);
         $soal = Soal::where('kuis_id', $kuis->id)->count();
-        $nilai = Nilai::where('user_id', Auth::id())->where('kuis_id', $id)->first();
+        $siswa = Siswa::where('user_id', Auth::id());
+        $nilai = Nilai::where('siswa_nisn', $siswa->nisn)->where('kuis_id', $id)->first();
         return view('siswa.kuis-kerjakan', [
             'title'=> 'Kerjakan Kuis',
             'kuis'=> $kuis,
@@ -80,10 +81,11 @@ class KuisController extends Controller
     public function soal($id)
     {
         $kuis = Kuis::find($id);
+        $siswa = Siswa::where('user_id', Auth::id());
         $jawabanUser = DB::table('jawabans')
                     ->join('soals', 'jawabans.soal_id', '=', 'soals.id')
                     ->join('kuis', 'soals.kuis_id', '=', 'kuis.id')
-                    ->where('user_id', Auth::id())
+                    ->where('siswa_nisn', $siswa->nisn)
                     ->where('kuis_id', $kuis->id)
                     ->select('jawabans.*')->get();
         if (!$jawabanUser->isEmpty()) {
@@ -127,7 +129,8 @@ class KuisController extends Controller
     public function hasil($id)
     {
         $kuis = Kuis::findOrFail($id);
-        $jawaban = Jawaban::where('user_id', Auth::id())->whereIn('soal_id', Soal::where('kuis_id', $id)->pluck('id'))->get();
+        $siswa = Siswa::where('user_id', Auth::id());
+        $jawaban = Jawaban::where('siswa_nisn', $siswa->nisn)->whereIn('soal_id', Soal::where('kuis_id', $id)->pluck('id'))->get();
         $totalNilai = 0;
         foreach ($jawaban as $jawab) {
             $soal = Soal::findOrFail($jawab->soal_id);
@@ -137,20 +140,17 @@ class KuisController extends Controller
         }
         DB::beginTransaction();
         try {
-            if (!empty(Nilai::where('user_id', Auth::id())->where('kuis_id', $id)->first())) {
-                Log::info('log untuk nilai tidak ada');
+            if (!empty(Nilai::where('siswa_nisn', $siswa->nisn)->where('kuis_id', $id)->first())) {
                 DB::commit();
             } else {
                 Nilai::create([
-                    'user_id'=> Auth::id(),
+                    'siswa_nisn'=> $siswa->nisn,
                     'nilai' => $totalNilai,
                     'kuis_id' => $id,
                 ]);
-                Log::info('log untuk nilai :',[$totalNilai]);
                 DB::commit();
             }
         } catch (\Throwable $th) {
-                Log::info('log untuk nilai :',[$th]);
                 DB::rollBack();
         }
         return view('siswa.kuis-hasil', [

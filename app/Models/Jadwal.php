@@ -15,6 +15,7 @@ class Jadwal extends Model
         "hari",
         "jam_mulai",
         "jam_selesai",
+        "tahun_ajaran_id",
     ];
 
     public function kelas()
@@ -30,5 +31,10 @@ class Jadwal extends Model
     public function mataPelajaran()
     {
         return $this->belongsTo(MataPelajaran::class, 'mata_pelajaran_id', 'id');
+    }
+
+    public function tahunAjaran()
+    {
+        return $this->belongsTo(TahunAjaran::class, 'tahun_ajaran_id', 'id');
     }
 }

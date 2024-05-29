@@ -71,12 +71,18 @@
                                 <span class="or-line"></span>
                                 <span class="span-or">or</span>
                             </div>
-                            <div class="social-login">
+                            <p>Guru</p>
+                            <p>email : russel.carli@example.net</p>
+                            <p>password : password</p>
+                            <p>Siswa</p>
+                            <p>email : hassie67@example.com</p>
+                            <p>password : password</p>
+                            {{-- <div class="social-login">
                                 <a href="#"><i class="fab fa-google-plus-g"></i></a>
                                 <a href="#"><i class="fab fa-facebook-f"></i></a>
                                 <a href="#"><i class="fab fa-twitter"></i></a>
                                 <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>

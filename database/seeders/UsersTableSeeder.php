@@ -26,7 +26,7 @@ class UsersTableSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-        User::factory(18)->create()->each(function ($user) {
+        User::factory(21)->create()->each(function ($user) {
             Guru::factory()->create(['user_id' => $user->id, 'nama' => $user->username]);
         });
         User::factory(50)->create()->each(function ($user) {
