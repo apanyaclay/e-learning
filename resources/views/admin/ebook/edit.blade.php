@@ -10,7 +10,7 @@
                                 <h3 class="page-title">Edit E-Book</h3>
                                 <ul class="breadcrumb">
                                     <li class="breadcrumb-item"><a
-                                            href="{{ route('admin/ebook/edit', ['id' => $ebook->id]) }}">E-Book</a></li>
+                                            href="{{ route('guru/ebook/edit', ['id' => $ebook->id]) }}">E-Book</a></li>
                                     <li class="breadcrumb-item active">Edit E-Book</li>
                                 </ul>
                             </div>
@@ -21,7 +21,7 @@
                     <div class="col-sm-12">
                         <div class="card comman-shadow">
                             <div class="card-body">
-                                <form action="{{ route('admin/ebook/edit_update') }}" method="POST"
+                                <form action="{{ route('guru/ebook/edit_update') }}" method="POST"
                                     enctype="multipart/form-data">
                                     @csrf
                                     <div class="row">
@@ -51,25 +51,6 @@
                                                     name="judul" placeholder="Masukkan Judul"
                                                     value="{{ $ebook->judul }}">
                                                 @error('judul')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-sm-4">
-                                            <div class="form-group local-forms">
-                                                <label>Guru <span class="login-danger">*</span></label>
-                                                <select class="form-control select @error('guru_nuptk') is-invalid @enderror"
-                                                    name="guru_nuptk">
-                                                    <option selected disabled>Silahkan pilih Guru </option>
-                                                    @foreach ($guru as $value)
-                                                        <option
-                                                            value="{{ $value->nuptk }}"{{ $ebook->guru_nuptk == $value->nuptk ? 'selected' : '' }}>
-                                                            {{ $value->nama }}</option>
-                                                    @endforeach
-                                                </select>
-                                                @error('guru_nuptk')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>

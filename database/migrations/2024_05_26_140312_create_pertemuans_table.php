@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer('pertemuan');
             $table->foreignId('materi_id')->constrained()->onDelete('cascade');
             $table->foreignId('jadwal_id')->constrained()->onDelete('cascade');
+            $table->date('tanggal');
             $table->timestamps();
         });
     }

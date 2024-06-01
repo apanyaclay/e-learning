@@ -37,6 +37,8 @@
                                             <th>No</th>
                                             <th>NISN</th>
                                             <th>Nama Siswa</th>
+                                            <th>Jenis Kelamin</th>
+                                            <th>Agama</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -53,6 +55,14 @@
                                                         <a href="{{url('siswa/siswa/profile/'. $value->nisn)}}">{{ $value->nama }}</a>
                                                     </h2>
                                                 </td>
+                                                <td>
+                                                    @if ($value->jenis_kelamin == 'L')
+                                                        Laki-Laki
+                                                    @else
+                                                        Perempuan
+                                                    @endif
+                                                </td>
+                                                <td>{{ $value->agama }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>

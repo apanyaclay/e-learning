@@ -127,7 +127,8 @@
                         <ul>
                             <li><a class="{{ set_active(['admin/jadwal']) }}"href="{{ route('admin/jadwal') }}">Jadwal
                                     List</a></li>
-                            <li><a class="{{ set_active(['admin/jadwal/add']) }}"href="{{ route('admin/jadwal/add') }}">Jadwal
+                            <li><a
+                                    class="{{ set_active(['admin/jadwal/add']) }}"href="{{ route('admin/jadwal/add') }}">Jadwal
                                     Add</a></li>
                             <li><a class="{{ request()->is('admin/jadwal/edit/*') ? 'active' : '' }}">Jadwal Edit</a>
                             </li>
@@ -143,7 +144,8 @@
                         <ul>
                             <li><a class="{{ set_active(['admin/absensi']) }}"href="{{ route('admin/absensi') }}">Absensi
                                     List</a></li>
-                            <li><a class="{{ set_active(['admin/absensi/add']) }}"href="{{ route('admin/absensi/add') }}">Absensi
+                            <li><a
+                                    class="{{ set_active(['admin/absensi/add']) }}"href="{{ route('admin/absensi/add') }}">Absensi
                                     Add</a></li>
                             <li><a class="{{ request()->is('admin/absensi/edit/*') ? 'active' : '' }}">Absensi Edit</a>
                             </li>
@@ -225,6 +227,80 @@
                                 class="fas fa-tachometer-alt"></i>
                             <span> Dashboard</span></a>
                     </li>
+                    <li class="{{ set_active(['guru/jadwal']) }}">
+                        <a href="{{ route('guru/jadwal') }}" class="{{ set_active(['guru/jadwal']) }}"><i
+                                class="fas fa-tachometer-alt"></i>
+                            <span> Jadwal</span></a>
+                    </li>
+                    <li class="{{ set_active(['guru/kelas']) }}">
+                        <a href="{{ route('guru/kelas') }}" class="{{ set_active(['guru/kelas']) }}"><i
+                                class="fas fa-tachometer-alt"></i>
+                            <span> Kelas</span></a>
+                    </li>
+                    <li
+                        class="submenu {{ set_active(['guru/pertemuan', 'guru/pertemuan/add']) }} {{ request()->is('guru/pertemuan/edit/*') ? 'active' : '' }}">
+                        <a href="#"><i class="fas fa-book-reader"></i>
+                            <span> Pertemuan</span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <ul>
+                            <li><a class="{{ set_active(['guru/pertemuan']) }}"href="{{ route('guru/pertemuan') }}">Pertemuan
+                                    List</a></li>
+                            <li><a
+                                    class="{{ set_active(['guru/pertemuan/add']) }}"href="{{ route('guru/pertemuan/add') }}">Pertemuan
+                                    Add</a></li>
+                            <li><a class="{{ request()->is('guru/pertemuan/edit/*') ? 'active' : '' }}">Pertemuan
+                                    Edit</a></li>
+                        </ul>
+                    </li>
+                    <li
+                        class="submenu {{ set_active(['guru/materi', 'guru/materi/add']) }} {{ request()->is('guru/materi/edit/*') ? 'active' : '' }} ">
+                        <a href="#"><i class="fas fa-book-reader"></i>
+                            <span> Materi</span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <ul>
+                            <li><a class="{{ set_active(['guru/materi']) }}"href="{{ route('guru/materi') }}">Materi
+                                    List</a></li>
+                            <li><a
+                                    class="{{ set_active(['guru/materi/add']) }}"href="{{ route('guru/materi/add') }}">Materi
+                                    Add</a></li>
+                            <li><a class="{{ request()->is('guru/materi/edit/*') ? 'active' : '' }}">Materi Edit</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li
+                        class="submenu {{ set_active(['guru/ebook', 'guru/ebook/add']) }} {{ request()->is('guru/ebook/edit/*') ? 'active' : '' }} ">
+                        <a href="#"><i class="fas fa-book-reader"></i>
+                            <span> E-Book</span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <ul>
+                            <li><a class="{{ set_active(['guru/ebook']) }}"href="{{ route('guru/ebook') }}">E-Book
+                                    List</a></li>
+                            <li><a class="{{ set_active(['guru/ebook/add']) }}"href="{{ route('guru/ebook/add') }}">E-Book
+                                    Add</a></li>
+                            <li><a class="{{ request()->is('guru/ebook/edit/*') ? 'active' : '' }}">E-Book Edit</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li
+                        class="submenu {{ set_active(['guru/kuis', 'guru/kuis/add']) }} {{ request()->is('guru/kuis/edit/*') ? 'active' : '' }} {{ request()->is('guru/kuis/view/*') ? 'active' : '' }}">
+                        <a href="#"><i class="fas fa-book-reader"></i>
+                            <span> Kuis</span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <ul>
+                            <li><a class="{{ set_active(['guru/kuis']) }}"href="{{ route('guru/kuis') }}">Kuis
+                                    List</a></li>
+                            <li><a class="{{ set_active(['guru/kuis/add']) }}"href="{{ route('guru/kuis/add') }}">Kuis
+                                    Add</a></li>
+                            <li><a class="{{ request()->is('guru/kuis/edit/*') ? 'active' : '' }}">Kuis Edit</a></li>
+                            <li><a href="" class="{{ request()->is('guru/kuis/view/*') ? 'active' : '' }}">Kuis
+                                    View</a>
+                            </li>
+                        </ul>
+                    </li>
                     {{-- Untuk role Siswa --}}
                 @elseif (Auth::user()->role == 'siswa')
                     <li class="{{ set_active(['siswa/dashboard']) }}">
@@ -258,7 +334,7 @@
                         </ul>
                     </li>
 
-                    <li class="submenu {{ set_active(['siswa/kelas']) }}">
+                    <li class="submenu {{ set_active(['siswa/kelas']) }} {{ request()->is('siswa/siswa/profile/*') ? 'active' : '' }}">
                         <a href="#"><i class="fas fa-book-reader"></i>
                             <span> Kelas</span>
                             <span class="menu-arrow"></span>
@@ -266,6 +342,9 @@
                         <ul>
                             <li><a class="{{ set_active(['siswa/kelas']) }}"href="{{ route('siswa/kelas') }}">Siswa
                                     List</a></li>
+                            <li><a href=""
+                                    class="{{ request()->is('siswa/siswa/profile/*') ? 'active' : '' }}">Siswa View</a>
+                            </li>
                         </ul>
                     </li>
 
@@ -280,20 +359,17 @@
                         </ul>
                     </li>
 
-                    <li
-                        class="submenu {{ set_active(['siswa/kuis']) }} {{ request()->is('siswa/kuis/view/*') ? 'active' : '' }}">
+                    <li class="submenu {{ set_active(['siswa/jadwal']) }} ">
                         <a href="#"><i class="fas fa-book-reader"></i>
-                            <span> Kuis</span>
+                            <span> Jadwal</span>
                             <span class="menu-arrow"></span>
                         </a>
                         <ul>
-                            <li><a class="{{ set_active(['siswa/kuis']) }}"href="{{ route('siswa/kuis') }}">Kuis
+                            <li><a class="{{ set_active(['siswa/jadwal']) }}"href="{{ route('siswa/jadwal') }}">Jadwal
                                     List</a></li>
-                            <li><a href=""
-                                    class="{{ request()->is('siswa/kuis/view/*') ? 'active' : '' }}">Kuis View</a>
-                            </li>
                         </ul>
                     </li>
+
                     <li
                         class="submenu {{ set_active(['siswa/pertemuan']) }} {{ request()->is('siswa/pertemuan/view/*') ? 'active' : '' }}">
                         <a href="#"><i class="fas fa-book-reader"></i>
@@ -307,6 +383,35 @@
                             <li><a href=""
                                     class="{{ request()->is('siswa/pertemuan/view/*') ? 'active' : '' }}">Pertemuan
                                     View</a></li>
+                        </ul>
+                    </li>
+                    <li
+                        class="submenu {{ set_active(['siswa/absensi']) }} {{ request()->is('siswa/absensi/view/*') ? 'active' : '' }}">
+                        <a href="#"><i class="fas fa-book-reader"></i>
+                            <span> Absensi</span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <ul>
+                            <li><a class="{{ set_active(['siswa/absensi']) }}"href="{{ route('siswa/absensi') }}">Absensi
+                                    List</a></li>
+                            <li><a href=""
+                                    class="{{ request()->is('siswa/absensi/view/*') ? 'active' : '' }}">Absensi
+                                    View</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li
+                        class="submenu {{ set_active(['siswa/kuis']) }} {{ request()->is('siswa/kuis/view/*') ? 'active' : '' }}">
+                        <a href="#"><i class="fas fa-book-reader"></i>
+                            <span> Kuis</span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <ul>
+                            <li><a class="{{ set_active(['siswa/kuis']) }}"href="{{ route('siswa/kuis') }}">Kuis
+                                    List</a></li>
+                            <li><a href=""
+                                    class="{{ request()->is('siswa/kuis/view/*') ? 'active' : '' }}">Kuis View</a>
+                            </li>
                         </ul>
                     </li>
                 @endif

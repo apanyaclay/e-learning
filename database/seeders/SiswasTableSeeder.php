@@ -15,10 +15,10 @@ class SiswasTableSeeder extends Seeder
     {
         Siswa::create([
             "nisn"=> "123456789",
-            "user_id"=> "20",
+            "user_id"=> "3",
             "kelas_id"=> "1",
             "jurusan_id"=> "1",
-            "nama"=> "Jane Smith",
+            "nama"=> "Siswa",
             "alamat"=> "Jl. Thamrin 2",
             "jenis_kelamin"=> "P",
             "tempat_lahir"=> "Medan",

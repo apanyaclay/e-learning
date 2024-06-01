@@ -36,11 +36,10 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Pertemuan</th>
-                                            <th>Kelas</th>
-                                            <th>Jurusan</th>
                                             <th>Materi</th>
                                             <th>Mapel</th>
                                             <th>Nama Guru</th>
+                                            <th>Tanggal</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -49,15 +48,16 @@
                                             <tr>
                                                 <td>{{ $index + 1 }}</td>
                                                 <td>{{ $value->pertemuan }}</td>
-                                                <td>{{ $value->kelas_nama }}</td>
-                                                <td>{{ $value->jurusan_nama }}</td>
                                                 <td>{{ $value->materi_nama }}</td>
                                                 <td>{{ $value->mapel_nama }}</td>
                                                 <td>{{ $value->guru_nama }}</td>
-                                                <td>
-                                                    <a href="{{url('siswa/pertemuan/'.$value->id)}}" class="btn btn-sm bg-success-light me-2">
-                                                        <i class="fe fe-eye"></i>
-                                                    </a>
+                                                <td>{{ \Carbon\Carbon::parse($value->tanggal)->format('d m Y') }}</td>
+                                                <td class="text-end">
+                                                    <div class="actions">
+                                                        <a href="{{url('siswa/pertemuan/view/'.$value->id)}}" class="btn btn-sm bg-success-light me-2">
+                                                            <i class="fe fe-eye"></i>
+                                                        </a>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @endforeach

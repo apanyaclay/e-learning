@@ -81,6 +81,19 @@
                                             @enderror
                                         </div>
                                     </div>
+                                    <div class="col-12 col-sm-4">
+                                        <div class="form-group local-forms">
+                                            <label>Tanggal <span class="login-danger">*</span></label>
+                                            <input type="date" class="form-control @error('tanggal') is-invalid @enderror"
+                                                name="tanggal" placeholder="Masukkan Tanggal"
+                                                value="{{ old('tanggal') }}">
+                                            @error('tanggal')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
                                     <div class="col-12">
                                         <div class="student-submit">
                                             <button type="submit" class="btn btn-primary">Tambah</button>

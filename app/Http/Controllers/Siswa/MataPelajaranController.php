@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Siswa;
 
 use App\Http\Controllers\Controller;
+use App\Models\Jadwal;
 use App\Models\MataPelajaran;
+use App\Models\Siswa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MataPelajaranController extends Controller
 {
@@ -13,10 +16,13 @@ class MataPelajaranController extends Controller
      */
     public function index()
     {
-        $mapel = MataPelajaran::all();
+        $siswa = Siswa::where('user_id', Auth::id())->first();
+        $jadwal = Jadwal::where('kelas_id', $siswa->kelas_id)
+            ->where('jurusan_id', $siswa->jurusan_id)->get()->groupBy('mata_pelajaran_id');
+
         return view('siswa.mapel', [
             'title' => 'List Mapel',
-            'mapel'=> $mapel
+            'mapel'=> $jadwal
         ]);
     }
 

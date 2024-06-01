@@ -122,7 +122,7 @@
                                             </div>
                                             <div class="views-personal">
                                                 <h4>Tanggal Lahir</h4>
-                                                <h5>{{ $guru->tanggal_lahir }}</h5>
+                                                <h5>{{ \Carbon\Carbon::parse($guru->tanggal_lahir)->format('d M Y') }}</h5>
                                             </div>
                                         </div>
                                         <div class="personal-activity">

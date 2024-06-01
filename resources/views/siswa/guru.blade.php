@@ -32,7 +32,7 @@
                                     <thead class="student-thread">
                                         <tr>
                                             <td>No</td>
-                                            <th>ID</th>
+                                            <th>NUPTK</th>
                                             <th>Nama</th>
                                             <th>Tanggal Lahir</th>
                                             <th>Tempat Lahir</th>
@@ -56,7 +56,7 @@
                                                         <a href="{{url('siswa/guru/profile/'. $value->nuptk)}}">{{ $value->nama }}</a>
                                                     </h2>
                                                 </td>
-                                                <td>{{ $value->tanggal_lahir }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($value->tanggal_lahir)->format('d-m-Y') }}</td>
                                                 <td>{{ $value->tempat_lahir }}</td>
                                                 <td>
                                                     @if ($value->jenis_kelamin == 'L')

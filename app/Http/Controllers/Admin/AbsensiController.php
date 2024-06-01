@@ -40,13 +40,13 @@ class AbsensiController extends Controller
         $data =  DB::table('absensis')
         ->join('siswas', 'absensis.siswa_nisn', '=', 'siswas.nisn')
         ->join('pertemuans', 'absensis.pertemuan_id', '=', 'pertemuans.id')
-        ->select('absensis.*', 'siswas.nama as siswa_nama', 'pertemuans.pertemuan as pertemuan');
+        ->select('absensis.*', 'siswas.nama as siswa_nama', 'pertemuans.pertemuan as pertemuan', 'pertemuans.tanggal as tanggal');
         $totalRecords = $data->count();
 
         $totalRecordsWithFilter = $data->where(function ($query) use ($searchValue) {
             $query->where('absensis.id', 'like', '%' . $searchValue . '%');
             $query->where('absensis.status', 'like', '%' . $searchValue . '%');
-            $query->where('absensis.tanggal', 'like', '%' . $searchValue . '%');
+            $query->where('pertemuans.tanggal', 'like', '%' . $searchValue . '%');
             $query->orWhere('siswas.nama', 'like', '%' . $searchValue . '%');
         })->count();
 
@@ -54,7 +54,7 @@ class AbsensiController extends Controller
             ->where(function ($query) use ($searchValue) {
             $query->where('absensis.id', 'like', '%' . $searchValue . '%');
             $query->where('absensis.status', 'like', '%' . $searchValue . '%');
-            $query->where('absensis.tanggal', 'like', '%' . $searchValue . '%');
+            $query->where('pertemuans.tanggal', 'like', '%' . $searchValue . '%');
             $query->orWhere('siswas.nama', 'like', '%' . $searchValue . '%');
             })
             ->skip($start)
@@ -105,7 +105,7 @@ class AbsensiController extends Controller
         $pertemuan = Pertemuan::all();
         return view('admin.absensi.add', [
             'title' => 'Tambah Absensi',
-            'siswas' => $siswas,
+            'siswa' => $siswas,
             'pertemuan' => $pertemuan,
         ]);
     }
@@ -116,12 +116,17 @@ class AbsensiController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama'=> 'required|string',
+            'siswa_nisn'=> 'required',
+            'pertemuan_id'=> 'required',
+            'status'=> 'required',
         ]);
         DB::beginTransaction();
         try {
             $absensi = Absensi::create([
-                'nama'=> $request->nama,
+                'siswa_nisn'=> $request->siswa_nisn,
+                'pertemuan_id'=> $request->pertemuan_id,
+                'status'=> $request->status,
+                'keterangan'=> $request->keterangan,
             ]);
             $absensi->save();
             DB::commit();
@@ -153,7 +158,7 @@ class AbsensiController extends Controller
         return view('admin.absensi.edit', [
             'title' => 'Tambah Absensi',
             'absensi' => $absensi,
-            'siswas' => $siswas,
+            'siswa' => $siswas,
             'pertemuan' => $pertemuan,
         ]);
     }
@@ -166,7 +171,10 @@ class AbsensiController extends Controller
         DB::beginTransaction();
         try {
             $absensi = Absensi::find($request->id);
-            $absensi->nama = $request->nama;
+            $absensi->siswa_nisn = $request->siswa_nisn;
+            $absensi->pertemuan_id = $request->pertemuan_id;
+            $absensi->status = $request->status;
+            $absensi->keterangan = $request->keterangan;
             $absensi->save();
             DB::commit();
             Toastr::success('Absensi berhasil diubah','success');
@@ -187,12 +195,12 @@ class AbsensiController extends Controller
         try {
             Absensi::destroy($request->id);
             DB::commit();
-            Toastr::success('Kelas deleted successfully :)','Success');
+            Toastr::success('Absensi deleted successfully :)','Success');
             return redirect()->back();
 
         } catch(\Exception $e) {
             DB::rollback();
-            Toastr::error('Kelas deleted fail :)','Error');
+            Toastr::error('Absensi deleted fail :)','Error');
             return redirect()->back();
         }
     }

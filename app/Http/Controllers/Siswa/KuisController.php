@@ -65,7 +65,7 @@ class KuisController extends Controller
     {
         $kuis = Kuis::find($id);
         $soal = Soal::where('kuis_id', $kuis->id)->count();
-        $siswa = Siswa::where('user_id', Auth::id());
+        $siswa = Siswa::where('user_id', Auth::id())->first();
         $nilai = Nilai::where('siswa_nisn', $siswa->nisn)->where('kuis_id', $id)->first();
         return view('siswa.kuis-kerjakan', [
             'title'=> 'Kerjakan Kuis',
@@ -81,7 +81,7 @@ class KuisController extends Controller
     public function soal($id)
     {
         $kuis = Kuis::find($id);
-        $siswa = Siswa::where('user_id', Auth::id());
+        $siswa = Siswa::where('user_id', Auth::id())->first();
         $jawabanUser = DB::table('jawabans')
                     ->join('soals', 'jawabans.soal_id', '=', 'soals.id')
                     ->join('kuis', 'soals.kuis_id', '=', 'kuis.id')
@@ -115,10 +115,11 @@ class KuisController extends Controller
     {
         $kuis = Kuis::findOrFail($id);
         $soal = Soal::where('kuis_id', $kuis->id)->get();
+        $siswa = Siswa::where('user_id', Auth::id())->first();
 
         foreach ($soal as $singleSoal) {
             $jawaban = new Jawaban();
-            $jawaban->user_id = Auth::id();
+            $jawaban->siswa_nisn = $siswa->nisn;
             $jawaban->soal_id = $singleSoal->id;
             $jawaban->jawaban = $request->input('soal.' . $singleSoal->id);
             $jawaban->save();
@@ -129,7 +130,7 @@ class KuisController extends Controller
     public function hasil($id)
     {
         $kuis = Kuis::findOrFail($id);
-        $siswa = Siswa::where('user_id', Auth::id());
+        $siswa = Siswa::where('user_id', Auth::id())->first();
         $jawaban = Jawaban::where('siswa_nisn', $siswa->nisn)->whereIn('soal_id', Soal::where('kuis_id', $id)->pluck('id'))->get();
         $totalNilai = 0;
         foreach ($jawaban as $jawab) {

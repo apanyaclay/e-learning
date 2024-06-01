@@ -127,7 +127,7 @@
                                                 <a class="edit-link" href="#" onclick="editTentang()"><i
                                                         class="far fa-edit me-1"></i>Edit</a>
                                             </h5>
-                                            <form action="{{ route('admin/profile/edit/tentang') }}" method="post">
+                                            <form action="{{ route('guru/profile/edit/tentang') }}" method="post">
                                                 @csrf
                                                 <div class="skill-tags">
                                                     <p id="tentang">{{ $guru->tentang }}</p>

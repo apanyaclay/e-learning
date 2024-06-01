@@ -99,185 +99,7 @@
 
             <div class="row">
                 <div class="col-12 col-lg-12 col-xl-8">
-                    <div class="row">
-                        <div class="col-12 col-lg-8 col-xl-8 d-flex">
-                            <div class="card flex-fill comman-shadow">
-                                <div class="card-header">
-                                    <div class="row align-items-center">
-                                        <div class="col-6">
-                                            <h5 class="card-title">Upcoming Lesson</h5>
-                                        </div>
-                                        <div class="col-6">
-                                            <span class="float-end view-link"><a href="#">View All
-                                                    Courses</a></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="pt-3 pb-3">
-                                    <div class="table-responsive lesson">
-                                        <table class="table table-center">
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        <div class="date">
-                                                            <b>Lessons 30</b>
-                                                            <p>3.1 Ipsuum dolor</p>
-                                                            <ul class="teacher-date-list">
-                                                                <li><i class="fas fa-calendar-alt me-2"></i>Sep 5,
-                                                                    2022</li>
-                                                                <li>|</li>
-                                                                <li><i class="fas fa-clock me-2"></i>09:00 - 10:00
-                                                                    am</li>
-                                                            </ul>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="lesson-confirm">
-                                                            <a href="#">Confirmed</a>
-                                                        </div>
-                                                        <button type="submit" class="btn btn-info">Reschedule</button>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <div class="date">
-                                                            <b>Lessons 30</b>
-                                                            <p>3.1 Ipsuum dolor</p>
-                                                            <ul class="teacher-date-list">
-                                                                <li><i class="fas fa-calendar-alt me-2"></i>Sep 5,
-                                                                    2022</li>
-                                                                <li>|</li>
-                                                                <li><i class="fas fa-clock me-2"></i>09:00 - 10:00
-                                                                    am</li>
-                                                            </ul>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="lesson-confirm">
-                                                            <a href="#">Confirmed</a>
-                                                        </div>
-                                                        <button type="submit" class="btn btn-info">Reschedule</button>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-lg-4 col-xl-4 d-flex">
-                            <div class="card flex-fill comman-shadow">
-                                <div class="card-header">
-                                    <div class="row align-items-center">
-                                        <div class="col-12">
-                                            <h5 class="card-title">Semester Progress</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="dash-widget">
-                                    <div class="circle-bar circle-bar1">
-                                        <div class="circle-graph1" data-percent="50">
-                                            <div class="progress-less">
-                                                <b>55/60</b>
-                                                <p>Lesson Progressed</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 col-lg-12 col-xl-12 d-flex">
-                            <div class="card flex-fill comman-shadow">
-                                <div class="card-header">
-                                    <div class="row align-items-center">
-                                        <div class="col-6">
-                                            <h5 class="card-title">Teaching Activity</h5>
-                                        </div>
-                                        <div class="col-6">
-                                            <ul class="chart-list-out">
-                                                <li><span class="circle-blue"></span>Teacher</li>
-                                                <li><span class="circle-green"></span>Students</li>
-                                                <li class="star-menus"><a href="javascript:;"><i
-                                                            class="fas fa-ellipsis-v"></i></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <div id="school-area"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-lg-12 col-xl-12 d-flex">
-                            <div class="card flex-fill comman-shadow">
-                                <div class="card-header d-flex align-items-center">
-                                    <h5 class="card-title">Teaching History</h5>
-                                    <ul class="chart-list-out student-ellips">
-                                        <li class="star-menus"><a href="javascript:;"><i
-                                                    class="fas fa-ellipsis-v"></i></a></li>
-                                    </ul>
-                                </div>
-                                <div class="card-body">
-                                    <div class="teaching-card">
-                                        <ul class="steps-history">
-                                            <li>Sep22</li>
-                                            <li>Sep23</li>
-                                            <li>Sep24</li>
-                                        </ul>
-                                        <ul class="activity-feed">
-                                            <li class="feed-item d-flex align-items-center">
-                                                <div class="dolor-activity">
-                                                    <span class="feed-text1"><a>Mathematics</a></span>
-                                                    <ul class="teacher-date-list">
-                                                        <li><i class="fas fa-calendar-alt me-2"></i>September 5,
-                                                            2022</li>
-                                                        <li>|</li>
-                                                        <li><i class="fas fa-clock me-2"></i>09:00 am - 10:00 am (60
-                                                            Minutes)</li>
-                                                    </ul>
-                                                </div>
-                                                <div class="activity-btns ms-auto">
-                                                    <button type="submit" class="btn btn-info">In Progress</button>
-                                                </div>
-                                            </li>
-                                            <li class="feed-item d-flex align-items-center">
-                                                <div class="dolor-activity">
-                                                    <span class="feed-text1"><a>Geography </a></span>
-                                                    <ul class="teacher-date-list">
-                                                        <li><i class="fas fa-calendar-alt me-2"></i>September 5,
-                                                            2022</li>
-                                                        <li>|</li>
-                                                        <li><i class="fas fa-clock me-2"></i>09:00 am - 10:00 am (60
-                                                            Minutes)</li>
-                                                    </ul>
-                                                </div>
-                                                <div class="activity-btns ms-auto">
-                                                    <button type="submit" class="btn btn-info">Completed</button>
-                                                </div>
-                                            </li>
-                                            <li class="feed-item d-flex align-items-center">
-                                                <div class="dolor-activity">
-                                                    <span class="feed-text1"><a>Botony</a></span>
-                                                    <ul class="teacher-date-list">
-                                                        <li><i class="fas fa-calendar-alt me-2"></i>September 5,
-                                                            2022</li>
-                                                        <li>|</li>
-                                                        <li><i class="fas fa-clock me-2"></i>09:00 am - 10:00 am (60
-                                                            Minutes)</li>
-                                                    </ul>
-                                                </div>
-                                                <div class="activity-btns ms-auto">
-                                                    <button type="submit" class="btn btn-info">In Progress</button>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
                 <div class="col-12 col-lg-12 col-xl-4 d-flex">
                     <div class="card flex-fill comman-shadow">
@@ -289,93 +111,35 @@
                                     <span><a href="javascript:;"><i class="feather-plus"></i></a></span>
                                 </div>
                                 <div class="upcome-event-date">
-                                    <h3>10 Jan</h3>
-                                    <span><i class="fas fa-ellipsis-h"></i></span>
+                                    <h3>{{ $tanggalBesok }}</h3>
                                 </div>
-                                <div class="calendar-details">
-                                    <p>08:00 am</p>
-                                    <div class="calendar-box normal-bg">
-                                        <div class="calandar-event-name">
-                                            <h4>Botony</h4>
-                                            <h5>Lorem ipsum sit amet</h5>
+                                @foreach ($besok as $value)
+                                    <div class="calendar-details">
+                                        <p>{{ \Carbon\Carbon::parse($value->jam_mulai)->format('H:i') }}</p>
+                                        <div class="calendar-box normal-bg">
+                                            <div class="calandar-event-name">
+                                                <h4>Kelas {{ $value->kelas_nama }} {{ $value->jurusan_nama }}</h4>
+                                            </div>
+                                            <span>{{ \Carbon\Carbon::parse($value->jam_mulai)->format('H:i') }} -
+                                                {{ \Carbon\Carbon::parse($value->jam_selesai)->format('H:i') }}</span>
                                         </div>
-                                        <span>08:00 - 09:00 am</span>
                                     </div>
-                                </div>
-                                <div class="calendar-details">
-                                    <p>09:00 am</p>
-                                    <div class="calendar-box normal-bg">
-                                        <div class="calandar-event-name">
-                                            <h4>Botony</h4>
-                                            <h5>Lorem ipsum sit amet</h5>
-                                        </div>
-                                        <span>09:00 - 10:00 am</span>
-                                    </div>
-                                </div>
-                                <div class="calendar-details">
-                                    <p>10:00 am</p>
-                                    <div class="calendar-box normal-bg">
-                                        <div class="calandar-event-name">
-                                            <h4>Botony</h4>
-                                            <h5>Lorem ipsum sit amet</h5>
-                                        </div>
-                                        <span>10:00 - 11:00 am</span>
-                                    </div>
-                                </div>
+                                @endforeach
                                 <div class="upcome-event-date">
-                                    <h3>10 Jan</h3>
-                                    <span><i class="fas fa-ellipsis-h"></i></span>
+                                    <h3>{{ $tanggalLusa }}</h3>
                                 </div>
-                                <div class="calendar-details">
-                                    <p>08:00 am</p>
-                                    <div class="calendar-box normal-bg">
-                                        <div class="calandar-event-name">
-                                            <h4>English</h4>
-                                            <h5>Lorem ipsum sit amet</h5>
+                                @foreach ($lusa as $value)
+                                    <div class="calendar-details">
+                                        <p>{{ \Carbon\Carbon::parse($value->jam_mulai)->format('H:i') }}</p>
+                                        <div class="calendar-box normal-bg">
+                                            <div class="calandar-event-name">
+                                                <h4>Kelas {{ $value->kelas_nama }} {{ $value->jurusan_nama }}</h4>
+                                            </div>
+                                            <span>{{ \Carbon\Carbon::parse($value->jam_mulai)->format('H:i') }} -
+                                                {{ \Carbon\Carbon::parse($value->jam_selesai)->format('H:i') }}</span>
                                         </div>
-                                        <span>08:00 - 09:00 am</span>
                                     </div>
-                                </div>
-                                <div class="calendar-details">
-                                    <p>09:00 am</p>
-                                    <div class="calendar-box normal-bg">
-                                        <div class="calandar-event-name">
-                                            <h4>Mathematics </h4>
-                                            <h5>Lorem ipsum sit amet</h5>
-                                        </div>
-                                        <span>09:00 - 10:00 am</span>
-                                    </div>
-                                </div>
-                                <div class="calendar-details">
-                                    <p>10:00 am</p>
-                                    <div class="calendar-box normal-bg">
-                                        <div class="calandar-event-name">
-                                            <h4>History</h4>
-                                            <h5>Lorem ipsum sit amet</h5>
-                                        </div>
-                                        <span>10:00 - 11:00 am</span>
-                                    </div>
-                                </div>
-                                <div class="calendar-details">
-                                    <p>11:00 am</p>
-                                    <div class="calendar-box break-bg">
-                                        <div class="calandar-event-name">
-                                            <h4>Break</h4>
-                                            <h5>Lorem ipsum sit amet</h5>
-                                        </div>
-                                        <span>11:00 - 12:00 am</span>
-                                    </div>
-                                </div>
-                                <div class="calendar-details">
-                                    <p>11:30 am</p>
-                                    <div class="calendar-box normal-bg">
-                                        <div class="calandar-event-name">
-                                            <h4>History</h4>
-                                            <h5>Lorem ipsum sit amet</h5>
-                                        </div>
-                                        <span>11:30 - 12:00 am</span>
-                                    </div>
-                                </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
@@ -383,4 +147,30 @@
             </div>
 
         </div>
+        <script>
+            $(document).ready(function() {
+
+                var event = [];
+
+                var events = [
+                    @foreach ($pertemuan as $value)
+                        {
+                            startDate: '{{ \Carbon\Carbon::parse($value->tanggal)->setHour(explode(":", $value->jam_mulai)[0])->setMinute(explode(":", $value->jam_mulai)[1])->toIso8601String() }}',
+                            endDate: '{{ \Carbon\Carbon::parse($value->tanggal)->setHour(explode(":", $value->jam_selesai)[0])->setMinute(explode(":", $value->jam_selesai)[1])->toIso8601String() }}',
+                            summary: 'Kelas {{$value->kelas_nama}} {{$value->jurusan_nama}}'
+                        },
+                    @endforeach
+                ];
+
+                // Gabungkan semua data acara
+                var allEvents = event.concat(events);
+
+                // Inisialisasi plugin kalender
+                $("#calendar-doctor").simpleCalendar({
+                    fixedStartDay: 0,
+                    disableEmptyDetails: true,
+                    events: allEvents
+                });
+            });
+        </script>
     @endsection

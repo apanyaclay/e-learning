@@ -16,7 +16,7 @@ class GurusTableSeeder extends Seeder
         Guru::create([
             "nuptk"=> "123456789",
             "user_id"=> "2",
-            "nama"=> "John Doe",
+            "nama"=> "Guru",
             "alamat"=> "Jl. Thamrin 2",
             "no_hp"=> "08123456789",
             "jenis_kelamin"=> "L",

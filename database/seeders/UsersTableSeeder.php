@@ -26,7 +26,25 @@ class UsersTableSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-        User::factory(21)->create()->each(function ($user) {
+        User::create([
+            'username' => 'Guru',
+            'email' => 'guru@example.com',
+            'email_verified_at' => now(),
+            'password' => Hash::make('password'),
+            'role'=> 'guru',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        User::create([
+            'username' => 'Siswa',
+            'email' => 'siswa@example.com',
+            'email_verified_at' => now(),
+            'password' => Hash::make('password'),
+            'role'=> 'siswa',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        User::factory(20)->create()->each(function ($user) {
             Guru::factory()->create(['user_id' => $user->id, 'nama' => $user->username]);
         });
         User::factory(50)->create()->each(function ($user) {

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Guru;
 use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -14,36 +15,47 @@ class GuruController extends Controller
 {
     public function index()
     {
-        // $siswa = Siswa::all()->count();
-        // $kelas = Kelas::all()->count();
-        // $jurusan = Jurusan::all()->count();
-        // $guru = Guru::all()->count();
-        // $mapel = MataPelajaran::all()->count();
-        // $kuis = Kuis::all()->count();
-        // $materi = Materi::all()->count();
-        // $ebook = Ebook::all()->count();
-        // $pertemuan = Pertemuan::all()->count();
-        // $jadwal = Jadwal::all()->count();
+        $guru = Guru::where('user_id', Auth::id())->first();
+        $pertemuan =  DB::table('pertemuans')
+                ->join('materis', 'pertemuans.materi_id', '=', 'materis.id')
+                ->join('jadwals', 'pertemuans.jadwal_id', '=', 'jadwals.id')
+                ->join('kelas', 'jadwals.kelas_id', '=', 'kelas.id')
+                ->join('jurusans', 'jadwals.jurusan_id', '=', 'jurusans.id')
+                ->join('e-books', 'materis.ebook_id', '=', 'e-books.id')
+                ->join('gurus', 'e-books.guru_nuptk', '=', 'gurus.nuptk')
+                ->where('gurus.nuptk', $guru->nuptk)
+                ->select('pertemuans.*', 'gurus.nama as guru_nama', 'kelas.nama as kelas_nama', 'jurusans.nama as jurusan_nama', 'materis.nama as materi_nama', 'jadwals.jam_mulai as jam_mulai', 'jadwals.jam_selesai as jam_selesai')->get();
+        $besok = DB::table('pertemuans')
+                ->join('materis', 'pertemuans.materi_id', '=', 'materis.id')
+                ->join('jadwals', 'pertemuans.jadwal_id', '=', 'jadwals.id')
+                ->join('kelas', 'jadwals.kelas_id', '=', 'kelas.id')
+                ->join('jurusans', 'jadwals.jurusan_id', '=', 'jurusans.id')
+                ->join('e-books', 'materis.ebook_id', '=', 'e-books.id')
+                ->join('gurus', 'e-books.guru_nuptk', '=', 'gurus.nuptk')
+                ->where('gurus.nuptk', $guru->nuptk)
+                ->where('pertemuans.tanggal', Carbon::tomorrow())
+                ->select('pertemuans.*', 'gurus.nama as guru_nama', 'kelas.nama as kelas_nama', 'jurusans.nama as jurusan_nama', 'materis.nama as materi_nama', 'jadwals.jam_mulai as jam_mulai', 'jadwals.jam_selesai as jam_selesai')->get();
 
-        // $boysData = [420, 532, 516, 575, 519, 517, 454, 392, 262, 383, 446, 551];
-        // $girlsData = [336, 612, 344, 647, 345, 563, 256, 344, 323, 300, 455, 456];
-        // $years = [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024];
-
+        $lusa = DB::table('pertemuans')
+            ->join('jadwals', 'pertemuans.jadwal_id', 'jadwals.id')
+            ->join('materis', 'pertemuans.materi_id', 'materis.id')
+            ->join('kelas', 'jadwals.kelas_id', 'kelas.id')
+            ->join('jurusans', 'jadwals.jurusan_id', 'jurusans.id')
+            ->join('mata_pelajarans', 'jadwals.mata_pelajaran_id', 'mata_pelajarans.id')
+            ->join('gurus', 'mata_pelajarans.guru_nuptk', 'gurus.nuptk')
+            ->where('gurus.nuptk', $guru->nuptk)
+            ->where('pertemuans.tanggal', Carbon::now()->addDays(2)->format('Y-m-d'))
+            ->select('pertemuans.*', 'gurus.nama as guru_nama', 'kelas.nama as kelas_nama', 'jurusans.nama as jurusan_nama', 'materis.nama as materi_nama', 'jadwals.jam_mulai as jam_mulai', 'jadwals.jam_selesai as jam_selesai')->get();
+        $tanggalBesok = Carbon::tomorrow()->format('d M');
+        $tanggalLusa = Carbon::now()->addDays(2)->format('d M');
         return view("guru.dashboard", [
             'title' => 'Dashboard Guru',
-            // 'siswa' => $siswa,
-            // 'kelas' => $kelas,
-            // 'jurusan' => $jurusan,
-            // 'guru' => $guru,
-            // 'boysData' => $boysData,
-            // 'girlsData' => $girlsData,
-            // 'years' => $years,
-            // 'mapel'=> $mapel,
-            // 'kuis'=> $kuis,
-            // 'materi'=> $materi,
-            // 'ebook'=> $ebook,
-            // 'pertemuan'=> $pertemuan,
-            // 'jadwal'=> $jadwal,
+            'besok' => $besok,
+            'lusa' => $lusa,
+            'tanggalBesok'=> $tanggalBesok,
+            'tanggalLusa'=> $tanggalLusa,
+            'pertemuan'=> $pertemuan
+
         ]);
     }
 

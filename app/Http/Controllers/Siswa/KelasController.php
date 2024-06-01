@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Jurusan;
 use App\Models\Kelas;
 use App\Models\Siswa;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -48,9 +49,15 @@ class KelasController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $siswa = Siswa::find($id);
+        $user = User::find($siswa->user_id);
+        return view('siswa.siswa-profile',[
+            'title'=> 'Profile Siswa',
+            'siswa' => $siswa,
+            'user' => $user
+        ]);
     }
 
     /**

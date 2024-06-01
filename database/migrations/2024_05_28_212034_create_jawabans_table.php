@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('siswa_nisn')->length(10);
             $table->foreign('siswa_nisn')->references('nisn')->on('siswas')->onDelete('cascade');
             $table->foreignId('soal_id')->constrained();
-            $table->string('jawaban');
+            $table->string('jawaban')->nullable();
             $table->timestamps();
         });
     }

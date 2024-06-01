@@ -70,13 +70,17 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
-            // Set the start time and duration from PHP
             var startTime = new Date("{{ $kuis->mulai }}");
             var durationInMinutes = parseInt("{{ $kuis->durasi }}");
+            var endTime;
 
-            // Calculate the end time by adding the duration to the start time
-            var endTime = new Date(startTime.getTime() + durationInMinutes * 60000);
-
+            function updateEndTime() {
+                endTime = new Date(startTime.getTime() + durationInMinutes * 60000);
+            }
+            updateEndTime();
+            if (startTime == 'Invalid Date') {
+                location.reload(); // Memuat ulang halaman jika startTime kosong
+            }
             var formSubmitted = false;
 
             // Update the count down every 1 second
@@ -86,7 +90,6 @@
 
                 // Find the distance between now and the count down date
                 var distance = endTime - now;
-
                 // Time calculations for hours, minutes and seconds
                 var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
@@ -94,7 +97,7 @@
 
                 // Display the result in the element with id="countdown"
                 document.getElementById("countdown").innerHTML = hours + " jam " + minutes + " menit " +
-                    seconds + " detik ";
+                seconds + " detik ";
 
                 // If the count down is finished, submit the form
                 if (distance < 0 && !formSubmitted) {
@@ -105,5 +108,5 @@
                 }
             }, 1000);
         });
-    </script>
+        </script>
 @endsection

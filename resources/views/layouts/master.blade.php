@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <title>Admin Dashboard</title>
+    <title>{{$title}} - {{config('app.name')}}</title>
     <link rel="shortcut icon" href="{{ URL::to('assets/img/favicon.png') }}">
     <link rel="stylesheet" href="{{ URL::to('assets/plugins/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ URL::to('assets/plugins/feather/feather.css') }}">
@@ -208,7 +208,6 @@
     <script src="{{ URL::to('assets/plugins/apexchart/apexcharts.min.js') }}"></script>
     <script src="{{ URL::to('assets/plugins/apexchart/chart-data.js') }}"></script>
     <script src="{{ URL::to('assets/plugins/simple-calendar/jquery.simple-calendar.js') }}"></script>
-    <script src="{{ URL::to('assets/js/calander.js') }}"></script>
     <script src="{{ URL::to('assets/js/circle-progress.min.js') }}"></script>
     <script src="{{ URL::to('assets/plugins/moment/moment.min.js') }}"></script>
     <script src="{{ URL::to('assets/js/bootstrap-datetimepicker.min.js') }}"></script>

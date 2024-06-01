@@ -10,7 +10,6 @@ class Absensi extends Model
     use HasFactory;
 
     protected $fillable = [
-        'tanggal',
         'siswa_nisn',
         'pertemuan_id',
         'status',

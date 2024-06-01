@@ -7,6 +7,7 @@ use App\Models\Jadwal;
 use App\Models\Materi;
 use App\Models\Pertemuan;
 use Brian2694\Toastr\Facades\Toastr;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -90,7 +91,7 @@ class PertemuanController extends Controller
                 "jurusan"           => $record->jurusan_nama,
                 "materi"            => $record->materi_nama,
                 "guru"              => $record->guru_nama,
-                "created_at"        => $record->created_at,
+                "tanggal"           => Carbon::parse($record->tanggal)->format('d m Y'),
                 "modify"            => $modify,
             ];
         }
@@ -127,6 +128,7 @@ class PertemuanController extends Controller
             'pertemuan'=> 'required',
             'materi_id'=> 'required',
             'jadwal_id'=> 'required',
+            'tanggal'=> 'required',
         ]);
         DB::beginTransaction();
         try {
@@ -134,6 +136,7 @@ class PertemuanController extends Controller
                 'pertemuan'=> $request->pertemuan,
                 'materi_id'=> $request->materi_id,
                 'jadwal_id'=> $request->jadwal_id,
+                'tanggal'=> $request->tanggal,
             ]);
             DB::commit();
             Toastr::success('Pertemuan berhasil ditambahkan :)','Success');
@@ -180,14 +183,15 @@ class PertemuanController extends Controller
                 'pertemuan'=> $request->pertemuan,
                 'materi_id'=> $request->materi_id,
                 'jadwal_id'=> $request->jadwal_id,
+                'tanggal'=> $request->tanggal,
             ];
             Pertemuan::where('id', $request->id)->update($updateRecord);
             DB::commit();
-            Toastr::success('Pertemuan berhasil ditambahkan :)','Success');
+            Toastr::success('Pertemuan berhasil diedit :)','Success');
             return redirect()->route('admin/pertemuan');
         } catch (\Throwable $th) {
             DB::rollBack();
-            Toastr::error('Pertemuan gagal ditambahkan :(', 'Error');
+            Toastr::error('Pertemuan gagal diedit :(', 'Error');
             return redirect()->back();
         }
     }

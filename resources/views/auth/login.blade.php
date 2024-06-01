@@ -72,10 +72,10 @@
                                 <span class="span-or">or</span>
                             </div>
                             <p>Guru</p>
-                            <p>email : russel.carli@example.net</p>
+                            <p>email : guru@example.net</p>
                             <p>password : password</p>
                             <p>Siswa</p>
-                            <p>email : hassie67@example.com</p>
+                            <p>email : siswa@example.com</p>
                             <p>password : password</p>
                             {{-- <div class="social-login">
                                 <a href="#"><i class="fab fa-google-plus-g"></i></a>

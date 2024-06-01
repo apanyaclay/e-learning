@@ -35,18 +35,21 @@
                                     <thead class="student-thread">
                                         <tr>
                                             <th>ID</th>
-                                            <th>Nama Jurusan</th>
+                                            <th>Nama Mapel</th>
                                             <th>KKM</th>
                                             <th>Nama Guru</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($mapel as $value)
+                                        @foreach ($mapel as $index => $value)
+                                        @php
+                                            $value = $value->first();
+                                        @endphp
                                             <tr>
-                                                <td>{{ $value->id }}</td>
-                                                <td>{{ $value->nama }}</td>
-                                                <td>{{ $value->kkm }}</td>
-                                                <td>{{ $value->guru->nama }}</td>
+                                                <td>{{ $index }}</td>
+                                                <td>{{ $value->mataPelajaran->nama }}</td>
+                                                <td>{{ $value->mataPelajaran->kkm }}</td>
+                                                <td>{{ $value->mataPelajaran->guru->nama }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>

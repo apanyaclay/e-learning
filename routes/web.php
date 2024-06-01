@@ -14,8 +14,17 @@ use App\Http\Controllers\Admin\PertemuanController;
 use App\Http\Controllers\Admin\SiswaController as AdminSiswaController;
 use App\Http\Controllers\Admin\SoalController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Guru\EBookController as GuruEBookController;
 use App\Http\Controllers\Guru\GuruController;
+use App\Http\Controllers\Guru\JadwalController as GuruJadwalController;
+use App\Http\Controllers\Guru\KuisController as GuruKuisController;
+use App\Http\Controllers\Guru\MateriController as GuruMateriController;
+use App\Http\Controllers\Guru\PertemuanController as GuruPertemuanController;
+use App\Http\Controllers\Guru\SiswaController as GuruSiswaController;
+use App\Http\Controllers\Guru\SoalController as GuruSoalController;
+use App\Http\Controllers\Siswa\AbsensiController as SiswaAbsensiController;
 use App\Http\Controllers\Siswa\GuruController as SiswaGuruController;
+use App\Http\Controllers\Siswa\JadwalController as SiswaJadwalController;
 use App\Http\Controllers\Siswa\JurusanController as SiswaJurusanController;
 use App\Http\Controllers\Siswa\KelasController as SiswaKelasController;
 use App\Http\Controllers\Siswa\KuisController as SiswaKuisController;
@@ -191,6 +200,67 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/profile/edit', 'edit')->name('guru/profile/edit');
             Route::post('/profile/edit/tentang', 'update')->name('guru/profile/edit/tentang');
         });
+        Route::controller(GuruJadwalController::class)->group(function(){
+            Route::get('jadwal', 'index')->name('guru/jadwal');
+        });
+        Route::controller(GuruSiswaController::class)->group(function(){
+            Route::get('kelas', 'index')->name('guru/kelas');
+            Route::get('kelas/{kelas}/{jurusan}', 'show')->name('guru/siswa');
+            Route::get('siswa/profile/{id}', 'profile')->name('guru/siswa/profile');
+        });
+        Route::controller(GuruMateriController::class)->group(function(){
+            Route::get('materi', 'index')->name('guru/materi');
+            Route::get('materi/data', 'getData')->name('guru/materi/data');
+            Route::get('materi/add', 'create')->name('guru/materi/add');
+            Route::post('materi/add', 'store')->name('guru/materi/add_store');
+            Route::get('materi/edit/{id}', 'edit')->name('guru/materi/edit');
+            Route::post('materi/edit', 'update')->name('guru/materi/edit_update');
+            Route::get('materi/view/{id}', 'show')->name('guru/materi/view');
+            Route::post('materi/delete', 'destroy')->name('guru/materi/delete');
+        });
+        Route::controller(GuruEBookController::class)->group(function(){
+            Route::get('ebook', 'index')->name('guru/ebook');
+            Route::get('ebook/data', 'getData')->name('guru/ebook/data');
+            Route::get('ebook/add', 'create')->name('guru/ebook/add');
+            Route::post('ebook/add', 'store')->name('guru/ebook/add_store');
+            Route::get('ebook/edit/{id}', 'edit')->name('guru/ebook/edit');
+            Route::post('ebook/edit', 'update')->name('guru/ebook/edit_update');
+            Route::get('ebook/view/{id}', 'show')->name('guru/ebook/view');
+            Route::post('ebook/delete', 'destroy')->name('guru/ebook/delete');
+        });
+        Route::controller(GuruKuisController::class)->group(function(){
+            Route::get('kuis', 'index')->name('guru/kuis');
+            Route::get('kuis/data', 'getData')->name('guru/kuis/data');
+            Route::get('kuis/add', 'create')->name('guru/kuis/add');
+            Route::post('kuis/add', 'store')->name('guru/kuis/add_store');
+            Route::get('kuis/edit/{id}', 'edit')->name('guru/kuis/edit');
+            Route::post('kuis/edit', 'update')->name('guru/kuis/edit_update');
+            // Route::get('kuis/view/{id}/soal', 'show')->name('guru/kuis/view');
+            Route::post('kuis/delete', 'destroy')->name('guru/kuis/delete');
+        });
+        Route::controller(GuruSoalController::class)->group(function(){
+            Route::get('kuis/view/{id}/soal', 'index')->name('guru/soal');
+            Route::get('soal/data', 'getData')->name('guru/soal/data');
+            Route::get('kuis/view/{id}/soal/add', 'create')->name('guru/soal/add');
+            Route::post('kuis/view/{id}/soal/add', 'store')->name('guru/soal/add_store');
+            Route::get('kuis/view/{id}/soal/edit/{idk}', 'edit')->name('guru/soal/edit');
+            Route::post('kuis/view/{id}/soal/edit', 'update')->name('guru/soal/edit_update');
+            Route::post('kuis/view/{id}/soal/delete', 'destroy')->name('guru/soal/delete');
+            Route::get('kuis/view/{id}/hasil/{nisn}', 'show')->name('guru/kuis/view/hasil');
+        });
+        Route::controller(GuruPertemuanController::class)->group(function(){
+            Route::get('pertemuan', 'index')->name('guru/pertemuan');
+            Route::get('pertemuan/data', 'getData')->name('guru/pertemuan/data');
+            Route::get('pertemuan/add', 'create')->name('guru/pertemuan/add');
+            Route::post('pertemuan/add', 'store')->name('guru/pertemuan/add_store');
+            Route::get('pertemuan/edit/{id}', 'edit')->name('guru/pertemuan/edit');
+            Route::post('pertemuan/edit', 'update')->name('guru/pertemuan/edit_update');
+            Route::get('pertemuan/view/{id}', 'show')->name('guru/pertemuan/view');
+            Route::post('pertemuan/view', 'show_store')->name('guru/pertemuan/view_store');
+            Route::get('/pertemuan/{id}/posts', 'fetchPosts')->name('guru/pertemuan/fetchPosts');
+            Route::post('pertemuan/delete', 'destroy')->name('guru/pertemuan/delete');
+            Route::post('absensi/update', 'absen')->name('guru/absensi/update');
+        });
     });
 
     Route::group(['prefix' => 'siswa', 'middleware' => 'role:siswa'], function(){
@@ -203,7 +273,7 @@ Route::middleware(['auth'])->group(function () {
         });
         Route::controller(SiswaKelasController::class)->group(function(){
             Route::get('kelas', 'index')->name('siswa/kelas');
-            Route::get('kelas/data', 'getData')->name('siswa/kelas/data');
+            Route::get('siswa/profile/{id}', 'show')->name('siswa/siswa/profile');
         });
         Route::controller(SiswaGuruController::class)->group(function(){
             Route::get('guru', 'index')->name('siswa/guru');
@@ -228,7 +298,17 @@ Route::middleware(['auth'])->group(function () {
         Route::controller(SiswaPertemuanController::class)->group(function(){
             Route::get('pertemuan', 'index')->name('siswa/pertemuan');
             Route::get('pertemuan/data', 'getData')->name('siswa/pertemuan/data');
-            Route::get('pertemuan/{id}', 'show')->name('siswa/pertemuan/');
+            Route::get('pertemuan/view/{id}', 'show')->name('siswa/pertemuan/view');
+            Route::post('pertemuan/view', 'show_store')->name('siswa/pertemuan/view_store');
+            Route::get('pertemuan/{id}/posts', 'fetchPosts')->name('siswa/pertemuan/fetchPosts');
+        });
+        Route::controller(SiswaJadwalController::class)->group(function(){
+            Route::get('jadwal', 'index')->name('siswa/jadwal');
+            Route::get('jadwal/data', 'getData')->name('siswa/jadwal/data');
+        });
+        Route::controller(SiswaAbsensiController::class)->group(function(){
+            Route::get('absensi', 'index')->name('siswa/absensi');
+            Route::get('absensi/data', 'getData')->name('siswa/absensi/data');
         });
     });
 });

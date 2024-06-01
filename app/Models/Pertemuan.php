@@ -12,6 +12,7 @@ class Pertemuan extends Model
         "pertemuan",
         "materi_id",
         "jadwal_id",
+        'tanggal',
     ];
 
     public function materi()

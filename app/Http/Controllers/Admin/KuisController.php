@@ -159,13 +159,7 @@ class KuisController extends Controller
      */
     public function show($id)
     {
-        $soal = Soal::where('kuis_id', $id)->get()->toArray();
-        $totalBobot = Soal::where('kuis_id', $id)->sum('bobot');
-        return view('admin.soal.index', [
-            'title'=> 'Lihat Kuis',
-            'soal'=> $soal,
-            'bobot'=> $totalBobot
-        ]);
+
     }
 
     /**

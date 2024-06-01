@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\Siswa;
 
 use App\Http\Controllers\Controller;
+use App\Models\Jadwal;
+use App\Models\Kuis;
+use App\Models\Pertemuan;
 use App\Models\Siswa;
 use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -14,36 +18,94 @@ class SiswaController extends Controller
 {
     public function index()
     {
-        // $siswa = Siswa::all()->count();
-        // $kelas = Kelas::all()->count();
-        // $jurusan = Jurusan::all()->count();
-        // $guru = Guru::all()->count();
-        // $mapel = MataPelajaran::all()->count();
-        // $kuis = Kuis::all()->count();
-        // $materi = Materi::all()->count();
-        // $ebook = Ebook::all()->count();
-        // $pertemuan = Pertemuan::all()->count();
-        // $jadwal = Jadwal::all()->count();
+        $siswa = Siswa::where('user_id', Auth::id())->first();
+        $kuis = DB::table('kuis')
+        ->join('gurus', 'kuis.guru_nuptk', '=', 'gurus.nuptk')
+        ->join('pertemuans', 'kuis.pertemuan_id', '=', 'pertemuans.id')
+        ->join('jadwals', 'pertemuans.jadwal_id', '=', 'jadwals.id')
+        ->join('materis', 'pertemuans.materi_id', '=', 'materis.id')
+        ->join('kelas', 'jadwals.kelas_id', '=', 'kelas.id')
+        ->join('jurusans', 'jadwals.jurusan_id', '=', 'jurusans.id')
+        ->join('mata_pelajarans', 'jadwals.mata_pelajaran_id', '=', 'mata_pelajarans.id')
+        ->where('kelas.id', $siswa->kelas_id)
+        ->where('jurusans.id', $siswa->jurusan_id)
+        ->select('kuis.*', 'gurus.nama as guru_nama', 'mata_pelajarans.nama as mapel', 'pertemuans.pertemuan as pertemuan_nama', 'materis.nama as materi_nama')->get()->count();
+        $jadwal = Jadwal::where('kelas_id', $siswa->kelas_id)
+            ->where('jurusan_id', $siswa->jurusan_id)->get()->groupBy('mata_pelajaran_id')->count();
 
-        // $boysData = [420, 532, 516, 575, 519, 517, 454, 392, 262, 383, 446, 551];
-        // $girlsData = [336, 612, 344, 647, 345, 563, 256, 344, 323, 300, 455, 456];
-        // $years = [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024];
+        $pertemuan = DB::table('pertemuans')
+            ->join('jadwals', 'pertemuans.jadwal_id', 'jadwals.id')
+            ->join('materis', 'pertemuans.materi_id', 'materis.id')
+            ->join('kelas', 'jadwals.kelas_id', 'kelas.id')
+            ->join('jurusans', 'jadwals.jurusan_id', 'jurusans.id')
+            ->join('mata_pelajarans', 'jadwals.mata_pelajaran_id', 'mata_pelajarans.id')
+            ->join('gurus', 'mata_pelajarans.guru_nuptk', 'gurus.nuptk')
+            ->where('kelas.id', $siswa->kelas_id)
+            ->where('jurusans.id', $siswa->jurusan_id)
+            ->select('pertemuans.*', 'gurus.nama as guru_nama', 'kelas.nama as kelas_nama', 'jurusans.nama as jurusan_nama', 'mata_pelajarans.nama as mapel_nama', 'materis.nama as materi_nama', 'jadwals.jam_mulai as jam_mulai', 'jadwals.jam_selesai as jam_selesai')->get();
 
+        $hariIni = DB::table('pertemuans')
+            ->join('jadwals', 'pertemuans.jadwal_id', 'jadwals.id')
+            ->join('materis', 'pertemuans.materi_id', 'materis.id')
+            ->join('kelas', 'jadwals.kelas_id', 'kelas.id')
+            ->join('jurusans', 'jadwals.jurusan_id', 'jurusans.id')
+            ->join('mata_pelajarans', 'jadwals.mata_pelajaran_id', 'mata_pelajarans.id')
+            ->join('gurus', 'mata_pelajarans.guru_nuptk', 'gurus.nuptk')
+            ->where('kelas.id', $siswa->kelas_id)
+            ->where('jurusans.id', $siswa->jurusan_id)
+            ->where('pertemuans.tanggal', Carbon::today())
+            ->select('pertemuans.*', 'gurus.nama as guru_nama', 'kelas.nama as kelas_nama', 'jurusans.nama as jurusan_nama', 'mata_pelajarans.nama as mapel_nama', 'materis.nama as materi_nama', 'jadwals.jam_mulai as jam_mulai', 'jadwals.jam_selesai as jam_selesai')->get();
+
+        $besok = DB::table('pertemuans')
+            ->join('jadwals', 'pertemuans.jadwal_id', 'jadwals.id')
+            ->join('materis', 'pertemuans.materi_id', 'materis.id')
+            ->join('kelas', 'jadwals.kelas_id', 'kelas.id')
+            ->join('jurusans', 'jadwals.jurusan_id', 'jurusans.id')
+            ->join('mata_pelajarans', 'jadwals.mata_pelajaran_id', 'mata_pelajarans.id')
+            ->join('gurus', 'mata_pelajarans.guru_nuptk', 'gurus.nuptk')
+            ->where('kelas.id', $siswa->kelas_id)
+            ->where('jurusans.id', $siswa->jurusan_id)
+            ->where('pertemuans.tanggal', Carbon::tomorrow())
+            ->select('pertemuans.*', 'gurus.nama as guru_nama', 'kelas.nama as kelas_nama', 'jurusans.nama as jurusan_nama', 'mata_pelajarans.nama as mapel_nama', 'materis.nama as materi_nama', 'jadwals.jam_mulai as jam_mulai', 'jadwals.jam_selesai as jam_selesai')->get();
+
+        $lusa = DB::table('pertemuans')
+            ->join('jadwals', 'pertemuans.jadwal_id', 'jadwals.id')
+            ->join('materis', 'pertemuans.materi_id', 'materis.id')
+            ->join('kelas', 'jadwals.kelas_id', 'kelas.id')
+            ->join('jurusans', 'jadwals.jurusan_id', 'jurusans.id')
+            ->join('mata_pelajarans', 'jadwals.mata_pelajaran_id', 'mata_pelajarans.id')
+            ->join('gurus', 'mata_pelajarans.guru_nuptk', 'gurus.nuptk')
+            ->where('kelas.id', $siswa->kelas_id)
+            ->where('jurusans.id', $siswa->jurusan_id)
+            ->where('pertemuans.tanggal', Carbon::now()->addDays(2)->format('Y-m-d'))
+            ->select('pertemuans.*', 'gurus.nama as guru_nama', 'kelas.nama as kelas_nama', 'jurusans.nama as jurusan_nama', 'mata_pelajarans.nama as mapel_nama', 'materis.nama as materi_nama', 'jadwals.jam_mulai as jam_mulai', 'jadwals.jam_selesai as jam_selesai')->get();
+        $tanggalBesok = Carbon::tomorrow()->format('d M');
+        $tanggalLusa = Carbon::now()->addDays(2)->format('d M');
+        $datahariIni = [];
+        foreach ($hariIni as $item) {
+            $datahariIni[] = [
+                'id' => $item->id,
+                'pertemuan' => $item->pertemuan,
+                'guru_nama' => $item->guru_nama,
+                'kelas_nama' => $item->kelas_nama,
+                'jurusan_nama' => $item->jurusan_nama,
+                'mapel_nama' => $item->mapel_nama,
+                'materi_nama' => $item->materi_nama,
+                'tanggal' => $item->tanggal,
+                'jam_mulai' => $item->jam_mulai,
+                'jam_selesai' => $item->jam_selesai,
+            ];
+        }
         return view("siswa.dashboard", [
             'title' => 'Dashboard Siswa',
-            // 'siswa' => $siswa,
-            // 'kelas' => $kelas,
-            // 'jurusan' => $jurusan,
-            // 'guru' => $guru,
-            // 'boysData' => $boysData,
-            // 'girlsData' => $girlsData,
-            // 'years' => $years,
-            // 'mapel'=> $mapel,
-            // 'kuis'=> $kuis,
-            // 'materi'=> $materi,
-            // 'ebook'=> $ebook,
-            // 'pertemuan'=> $pertemuan,
-            // 'jadwal'=> $jadwal,
+            'jadwal' => $jadwal,
+            'kuis' => $kuis,
+            'pertemuan' => $pertemuan,
+            'datahariIni' => $datahariIni,
+            'besok' => $besok,
+            'lusa' => $lusa,
+            'tanggalBesok' => $tanggalBesok,
+            'tanggalLusa' => $tanggalLusa,
         ]);
     }
 

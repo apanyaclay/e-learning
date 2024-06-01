@@ -46,12 +46,12 @@
                                 </div>
                                 <div class="col-md-6">
                                     <strong>Hasil:</strong>
-                                    <p>{{ isset($nilai) && $nilai->nilai ? $nilai->nilai : '-' }}</p>
+                                    <p>{{ isset($nilai) && !is_null($nilai->nilai) ? $nilai->nilai : '-' }}</p>
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-12 text-center">
-                                    @if (isset($nilai) && $nilai->nilai)
+                                    @if (isset($nilai) && !is_null($nilai->nilai))
                                         <button class="btn btn-success" disabled>Sudah Dikerjakan</button>
                                     @elseif (now() <= \Carbon\Carbon::parse($kuis->tenggat))
                                         <button class="btn btn-primary" onclick="location.href='{{ url('siswa/kuis/kerjakan/'. $kuis->id.'/soal') }}'">Mulai Kuis</button>
