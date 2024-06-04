@@ -41,7 +41,7 @@
                                         @foreach ($jadwal as $kelasId => $jurusanGroup)
                                         @foreach ($jurusanGroup as $jurusanId => $jadwals)
                                             <tr>
-                                                <td>{{ $loop->parent->iteration }}</td>
+                                                <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $jadwals->first()->kelas->nama }} {{ $jadwals->first()->jurusan->nama }}</td>
                                                 <td class="text-end">
                                                     <div class="actions">

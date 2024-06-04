@@ -113,45 +113,6 @@
     </div>
 
 @section('script')
-    {{-- <script type="text/javascript">
-        $(document).ready(function() {
-            $('#dataList').DataTable({
-                processing: true,
-                serverSide: true,
-                ordering: true,
-                searching: true,
-                ajax: {
-                    url: "{{ route('admin/soal/data') }}",
-                },
-                columns: [{
-                        data: 'id',
-                        name: 'id',
-                    },
-                    // {
-                    //     data: 'foto',
-                    //     name: 'foto',
-                    // },
-                    {
-                        data: 'pertanyaan',
-                        name: 'pertanyaan',
-                    },
-                    // {
-                    //     data: 'kunci',
-                    //     name: 'kunci',
-                    // },
-                    // {
-                    //     data: 'bobot',
-                    //     name: 'bobot',
-                    // },
-                    {
-                        data: 'modify',
-                        name: 'modify',
-                    },
-                ]
-            });
-        });
-    </script> --}}
-
     {{-- delete js --}}
     <script>
         $(document).on('click', '.delete', function() {

@@ -43,8 +43,9 @@ class KuisController extends Controller
                 ->join('gurus', 'kuis.guru_nuptk', '=', 'gurus.nuptk')
                 ->join('jadwals', 'pertemuans.jadwal_id', '=', 'jadwals.id')
                 ->join('kelas', 'jadwals.kelas_id', '=', 'kelas.id')
+                ->join('mata_pelajarans', 'jadwals.mata_pelajaran_id', '=', 'mata_pelajarans.id')
                 ->join('jurusans', 'jadwals.jurusan_id', '=', 'jurusans.id')
-                ->select('kuis.*', 'pertemuans.pertemuan as pertemuan', 'gurus.nama as guru_nama', 'kelas.nama as kelas_nama', 'jurusans.nama as jurusan_nama');
+                ->select('kuis.*', 'pertemuans.pertemuan as pertemuan', 'gurus.nama as guru_nama', 'kelas.nama as kelas_nama', 'jurusans.nama as jurusan_nama', 'mata_pelajarans.nama as mapel');
         $totalRecords = $data->count();
 
         $totalRecordsWithFilter = $data->where(function ($query) use ($searchValue) {
@@ -74,7 +75,7 @@ class KuisController extends Controller
                 <td class="text-end">
                     <div class="actions">
                         <a href="'.url('admin/kuis/view/'.$record->id).'/soal'.'" class="btn btn-sm bg-success-light me-2">
-                            <i class="feather-eye"></i>
+                            <i class="fe fe-eye"></i>
                         </a>
                         <a href="'.url('admin/kuis/edit/'.$record->id).'" class="btn btn-sm bg-danger-light">
                             <i class="far fa-edit me-2"></i>
@@ -92,9 +93,9 @@ class KuisController extends Controller
                 "tenggat"       => $record->tenggat,
                 "durasi"        => $record->durasi,
                 "guru"          => $record->guru_nama,
+                "mapel"         => $record->mapel,
                 "pertemuan"     => $record->pertemuan,
-                "kelas"         => $record->kelas_nama,
-                "jurusan"         => $record->jurusan_nama,
+                "kelas"         => $record->kelas_nama.'-'.$record->jurusan_nama,
                 "modify"        => $modify,
             ];
         }
@@ -113,11 +114,9 @@ class KuisController extends Controller
      */
     public function create()
     {
-        $guru = Guru::all();
         $pertemuan = Pertemuan::all();
         return view('admin.kuis.add', [
             'title'=> 'Tambah Kuis',
-            'guru'=> $guru,
             'pertemuan'=> $pertemuan
         ]);
     }
@@ -132,16 +131,16 @@ class KuisController extends Controller
             'tenggat'       => 'required',
             'durasi'        => 'required',
             'pertemuan_id'  => 'required',
-            'guru_nuptk'    => 'required',
         ]);
         DB::beginTransaction();
         try {
+            $pertemuan = Pertemuan::find($request->pertemuan_id);
             $kelas = Kuis::create([
                 'nama'          => $request->nama,
                 'tenggat'       => $request->tenggat,
                 'durasi'        => $request->durasi,
                 'pertemuan_id'  => $request->pertemuan_id,
-                'guru_nuptk'    => $request->guru_nuptk,
+                'guru_nuptk'    => $pertemuan->jadwal->mataPelajaran->guru_nuptk,
             ]);
             $kelas->save();
             DB::commit();
@@ -167,12 +166,10 @@ class KuisController extends Controller
      */
     public function edit($id)
     {
-        $guru = Guru::all();
         $pertemuan = Pertemuan::all();
         $kuis = Kuis::find($id);
         return view('admin.kuis.edit', [
             'title'=> 'Edit Kuis',
-            'guru'=> $guru,
             'pertemuan'=> $pertemuan,
             'kuis'=> $kuis
         ]);
@@ -185,11 +182,12 @@ class KuisController extends Controller
     {
         DB::beginTransaction();
         try {
+            $pertemuan = Pertemuan::find($request->pertemuan_id);
             $kuis = Kuis::find($request->id);
             $kuis->nama = $request->nama;
             $kuis->tenggat = $request->tenggat;
             $kuis->durasi = $request->durasi;
-            $kuis->guru_nuptk = $request->guru_nuptk;
+            $kuis->guru_nuptk = $pertemuan->jadwal->mataPelajaran->guru_nuptk;
             $kuis->pertemuan_id = $request->pertemuan_id;
             $kuis->save();
             DB::commit();

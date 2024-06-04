@@ -111,7 +111,7 @@ class SoalController extends Controller
     public function show($id, $nisn)
     {
         $kuis = Kuis::findOrFail($id);
-        $siswa = Siswa::where('user_id', $nisn)->first();
+        $siswa = Siswa::findOrFail($nisn);
         $jawaban = Jawaban::where('siswa_nisn', $nisn)->whereIn('soal_id', Soal::where('kuis_id', $id)->pluck('id'))->get();
         foreach ($jawaban as $jawab) {
             $soal = Soal::findOrFail($jawab->soal_id);
@@ -122,6 +122,7 @@ class SoalController extends Controller
         return view('guru.kuis-hasil', [
             'title'=> 'Hasil Kuis',
             'kuis' => $kuis,
+            'siswa'=> $siswa,
             'jawaban' => $jawaban,
             'totalNilai'=> $nilai->nilai
         ]);

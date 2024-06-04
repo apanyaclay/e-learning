@@ -10,6 +10,7 @@ use App\Models\MataPelajaran;
 use App\Models\Materi;
 use App\Models\Pertemuan;
 use App\Models\Post;
+use App\Models\Siswa;
 use Brian2694\Toastr\Facades\Toastr;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -146,12 +147,21 @@ class PertemuanController extends Controller
         ]);
         DB::beginTransaction();
         try {
-            Pertemuan::create([
+            $pertemuan = Pertemuan::create([
                 'pertemuan'=> $request->pertemuan,
                 'materi_id'=> $request->materi_id,
                 'jadwal_id'=> $request->jadwal_id,
                 'tanggal'=> $request->tanggal,
             ]);
+            $jadwal = Jadwal::find($request->jadwal_id);
+            $siswa = Siswa::where('kelas_id', $jadwal->kelas_id)->where('jurusan_id', $jadwal->jurusan_id)->get();
+            foreach ($siswa as $key => $value) {
+                Absensi::create([
+                    'siswa_nisn'=> $value->nisn,
+                    'pertemuan_id'=> $pertemuan->id,
+                    'status'=> 'Alpa',
+                ]);
+            }
             DB::commit();
             Toastr::success('Pertemuan berhasil ditambahkan :)','Success');
             return redirect()->route('guru/pertemuan');
@@ -169,13 +179,15 @@ class PertemuanController extends Controller
     public function show($id)
     {
         $pertemuan = Pertemuan::find($id);
+        $materi = Materi::find($pertemuan->materi_id);
         $absensi = Absensi::where('pertemuan_id', $id)->get();
         $posts = Post::where('pertemuan_id', $id)->orderBy('created_at', 'desc')->get();
         return view('guru.pertemuan-view', [
             'title'=> 'Detail Pertemuan',
             'pertemuan'=> $pertemuan,
             'posts' => $posts,
-            'absensi'=> $absensi
+            'absensi'=> $absensi,
+            'materi'=> $materi
         ]);
     }
 
@@ -198,10 +210,13 @@ class PertemuanController extends Controller
     public function fetchPosts($pertemuan_id)
     {
         $posts = DB::table('posts')
-            ->join('users','posts.user_id','=','users.id')
+            ->join('users', 'posts.user_id', '=', 'users.id')
+            ->leftJoin('siswas', 'users.id', '=', 'siswas.user_id')
+            ->leftJoin('gurus', 'users.id', '=', 'gurus.user_id')
+            ->leftJoin('admins', 'users.id', '=', 'admins.user_id')
             ->where('posts.pertemuan_id', $pertemuan_id)
-            ->select('posts.*', 'users.username as username')->get();
-        // $posts = Post::where('pertemuan_id', $pertemuan_id)->get();
+            ->select('posts.*', 'users.username as username', 'admins.foto as admin_foto', 'siswas.foto as siswa_foto', 'gurus.foto as guru_foto', 'users.role as user_type')
+            ->get();
         return response()->json($posts);
     }
 
@@ -266,24 +281,6 @@ class PertemuanController extends Controller
         } catch(\Exception $e) {
             DB::rollback();
             Toastr::error('Pertemuan deleted fail','Error');
-            return redirect()->back();
-        }
-    }
-
-    public function absen(Request $request)
-    {
-        DB::beginTransaction();
-        try {
-            $absensi = Absensi::findOrFail($request->absensi_id);
-            $absensi->status = $request->new_status;
-            $absensi->save();
-            DB::commit();
-            Toastr::success('Absensi berhasil diubah :)','Success');
-            return redirect()->back();
-
-        } catch(\Exception $e) {
-            DB::rollback();
-            Toastr::error('Absensi gagal diubah','Error');
             return redirect()->back();
         }
     }

@@ -13,6 +13,8 @@ use App\Http\Controllers\Admin\MateriController;
 use App\Http\Controllers\Admin\PertemuanController;
 use App\Http\Controllers\Admin\SiswaController as AdminSiswaController;
 use App\Http\Controllers\Admin\SoalController;
+use App\Http\Controllers\Admin\TahunAjaranController;
+use App\Http\Controllers\Admin\TugasController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Guru\EBookController as GuruEBookController;
 use App\Http\Controllers\Guru\GuruController;
@@ -22,6 +24,7 @@ use App\Http\Controllers\Guru\MateriController as GuruMateriController;
 use App\Http\Controllers\Guru\PertemuanController as GuruPertemuanController;
 use App\Http\Controllers\Guru\SiswaController as GuruSiswaController;
 use App\Http\Controllers\Guru\SoalController as GuruSoalController;
+use App\Http\Controllers\Guru\TugasController as GuruTugasController;
 use App\Http\Controllers\Siswa\AbsensiController as SiswaAbsensiController;
 use App\Http\Controllers\Siswa\GuruController as SiswaGuruController;
 use App\Http\Controllers\Siswa\JadwalController as SiswaJadwalController;
@@ -31,6 +34,7 @@ use App\Http\Controllers\Siswa\KuisController as SiswaKuisController;
 use App\Http\Controllers\Siswa\MataPelajaranController as SiswaMataPelajaranController;
 use App\Http\Controllers\Siswa\PertemuanController as SiswaPertemuanController;
 use App\Http\Controllers\Siswa\SiswaController;
+use App\Http\Controllers\Siswa\TugasController as SiswaTugasController;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -53,7 +57,7 @@ function set_active( $route ) {
 }
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 
 Route::middleware(['guest'])->group(function () {
@@ -69,6 +73,8 @@ Route::middleware(['auth'])->group(function () {
     Route::group(['prefix' => 'admin', 'middleware' => 'role:admin'], function(){
         Route::redirect('/', 'dashboard');
         Route::controller(AdminController::class)->group(function(){
+            Route::get('/setting', 'setting')->name('setting');
+            Route::post('/setting', 'setting_update')->name('setting/update');
             Route::get('/dashboard', 'index')->name('admin/dashboard');
             Route::get('/profile', 'profile')->name('admin/profile');
             Route::post('/profile/edit', 'edit')->name('admin/profile/edit');
@@ -103,6 +109,15 @@ Route::middleware(['auth'])->group(function () {
             Route::post('kelas/edit', 'update')->name('admin/kelas/edit_update');
             Route::post('kelas/delete', 'destroy')->name('admin/kelas/delete');
         });
+        Route::controller(TahunAjaranController::class)->group(function(){
+            Route::get('ta', 'index')->name('admin/ta');
+            Route::get('ta/data', 'getData')->name('admin/ta/data');
+            Route::get('ta/add', 'create')->name('admin/ta/add');
+            Route::post('ta/add', 'store')->name('admin/ta/add_store');
+            Route::get('ta/edit/{id}', 'edit')->name('admin/ta/edit');
+            Route::post('ta/edit', 'update')->name('admin/ta/edit_update');
+            Route::post('ta/delete', 'destroy')->name('admin/ta/delete');
+        });
         Route::controller(JurusanController::class)->group(function(){
             Route::get('jurusan', 'index')->name('admin/jurusan');
             Route::get('jurusan/data', 'getData')->name('admin/jurusan/data');
@@ -128,7 +143,6 @@ Route::middleware(['auth'])->group(function () {
             Route::post('kuis/add', 'store')->name('admin/kuis/add_store');
             Route::get('kuis/edit/{id}', 'edit')->name('admin/kuis/edit');
             Route::post('kuis/edit', 'update')->name('admin/kuis/edit_update');
-            // Route::get('kuis/view/{id}/soal', 'show')->name('admin/kuis/view');
             Route::post('kuis/delete', 'destroy')->name('admin/kuis/delete');
         });
         Route::controller(SoalController::class)->group(function(){
@@ -139,6 +153,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('kuis/view/{id}/soal/edit/{idk}', 'edit')->name('admin/soal/edit');
             Route::post('kuis/view/{id}/soal/edit', 'update')->name('admin/soal/edit_update');
             Route::post('kuis/view/{id}/soal/delete', 'destroy')->name('admin/soal/delete');
+            Route::get('kuis/view/{id}/hasil/{nisn}', 'show')->name('admin/kuis/view/hasil');
         });
         Route::controller(MateriController::class)->group(function(){
             Route::get('materi', 'index')->name('admin/materi');
@@ -168,6 +183,8 @@ Route::middleware(['auth'])->group(function () {
             Route::get('pertemuan/edit/{id}', 'edit')->name('admin/pertemuan/edit');
             Route::post('pertemuan/edit', 'update')->name('admin/pertemuan/edit_update');
             Route::get('pertemuan/view/{id}', 'show')->name('admin/pertemuan/view');
+            Route::post('pertemuan/view', 'show_store')->name('admin/pertemuan/view_store');
+            Route::get('/pertemuan/{id}/posts', 'fetchPosts')->name('admin/pertemuan/fetchPosts');
             Route::post('pertemuan/delete', 'destroy')->name('admin/pertemuan/delete');
         });
         Route::controller(JadwalController::class)->group(function(){
@@ -189,6 +206,18 @@ Route::middleware(['auth'])->group(function () {
             Route::post('absensi/edit', 'update')->name('admin/absensi/edit_update');
             Route::get('absensi/profile/{id}', 'show')->name('admin/absensi/profile');
             Route::post('absensi/delete', 'destroy')->name('admin/absensi/delete');
+        });
+        Route::controller(TugasController::class)->group(function(){
+            Route::get('tugas', 'index')->name('admin/tugas');
+            Route::get('tugas/data', 'getData')->name('admin/tugas/data');
+            Route::get('tugas/add', 'create')->name('admin/tugas/add');
+            Route::post('tugas/add', 'store')->name('admin/tugas/add_store');
+            Route::get('tugas/edit/{id}', 'edit')->name('admin/tugas/edit');
+            Route::post('tugas/edit', 'update')->name('admin/tugas/edit_update');
+            Route::get('tugas/view/{id}', 'show')->name('admin/tugas/view');
+            Route::get('tugas/view/{id}/edit/{nisn}', 'nilai')->name('admin/tugas/view/edit');
+            Route::post('tugas/view/edit/{nisn}', 'nilai_store')->name('admin/tugas/view/edit_store');
+            Route::post('tugas/delete', 'destroy')->name('admin/tugas/delete');
         });
     });
 
@@ -259,7 +288,18 @@ Route::middleware(['auth'])->group(function () {
             Route::post('pertemuan/view', 'show_store')->name('guru/pertemuan/view_store');
             Route::get('/pertemuan/{id}/posts', 'fetchPosts')->name('guru/pertemuan/fetchPosts');
             Route::post('pertemuan/delete', 'destroy')->name('guru/pertemuan/delete');
-            Route::post('absensi/update', 'absen')->name('guru/absensi/update');
+        });
+        Route::controller(GuruTugasController::class)->group(function(){
+            Route::get('tugas', 'index')->name('guru/tugas');
+            Route::get('tugas/data', 'getData')->name('guru/tugas/data');
+            Route::get('tugas/add', 'create')->name('guru/tugas/add');
+            Route::post('tugas/add', 'store')->name('guru/tugas/add_store');
+            Route::get('tugas/edit/{id}', 'edit')->name('guru/tugas/edit');
+            Route::post('tugas/edit', 'update')->name('guru/tugas/edit_update');
+            Route::get('tugas/view/{id}', 'show')->name('guru/tugas/view');
+            Route::get('tugas/view/{id}/edit/{nisn}', 'nilai')->name('guru/tugas/view/edit');
+            Route::post('tugas/view/edit/{nisn}', 'nilai_store')->name('guru/tugas/view/edit_store');
+            Route::post('tugas/delete', 'destroy')->name('guru/tugas/delete');
         });
     });
 
@@ -308,7 +348,12 @@ Route::middleware(['auth'])->group(function () {
         });
         Route::controller(SiswaAbsensiController::class)->group(function(){
             Route::get('absensi', 'index')->name('siswa/absensi');
-            Route::get('absensi/data', 'getData')->name('siswa/absensi/data');
+            Route::get('pertemuan/{id}/absensi/{nisn}', 'edit')->name('siswa/absensi/pertemuan');
+        });
+        Route::controller(SiswaTugasController::class)->group(function(){
+            Route::get('tugas', 'index')->name('siswa/tugas');
+            Route::get('tugas/kerjakan/{id}', 'show')->name('siswa/tugas/kerjakan');
+            Route::post('tugas/kerjakan', 'update')->name('siswa/tugas/kerjakan_store');
         });
     });
 });

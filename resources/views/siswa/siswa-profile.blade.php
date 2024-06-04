@@ -40,13 +40,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-4 col-md-4 d-flex align-items-center">
-                                    </div>
-                                    <div class="col-lg-4 col-md-4 d-flex align-items-center">
-                                        <div class="follow-btn-group">
-                                            <button type="submit" class="btn btn-info message-btns">Message</button>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>

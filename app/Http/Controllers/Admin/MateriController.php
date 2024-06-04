@@ -8,6 +8,7 @@ use App\Models\Materi;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class MateriController extends Controller
 {
@@ -57,7 +58,14 @@ class MateriController extends Controller
         $data_arr = [];
 
         foreach ($records as $record) {
-
+            $extension = pathinfo($record->file, PATHINFO_EXTENSION);
+            $filenameWithExtension = $record->judul . '.' . $extension;
+            $files = '
+            <td>
+                <a href="'.Storage::url('ebook/'.$record->file).'" download="'.$filenameWithExtension.'" target="_blank" class="btn
+                    btn-primary btn-sm">Download</a>
+            </td>
+            ';
             $modify = '
                 <td class="text-end">
                     <div class="actions">
@@ -76,7 +84,7 @@ class MateriController extends Controller
                 "nama"              => $record->nama,
                 "description"       => $record->description,
                 "judul"             => $record->judul,
-                "file"              => $record->file,
+                "file"              => $files,
                 "modify"            => $modify,
             ];
         }

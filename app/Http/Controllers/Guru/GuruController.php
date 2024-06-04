@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Guru;
 
 use App\Http\Controllers\Controller;
 use App\Models\Guru;
+use App\Models\Jadwal;
+use App\Models\MataPelajaran;
+use App\Models\Siswa;
 use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
 use Carbon\Carbon;
@@ -48,14 +51,85 @@ class GuruController extends Controller
             ->select('pertemuans.*', 'gurus.nama as guru_nama', 'kelas.nama as kelas_nama', 'jurusans.nama as jurusan_nama', 'materis.nama as materi_nama', 'jadwals.jam_mulai as jam_mulai', 'jadwals.jam_selesai as jam_selesai')->get();
         $tanggalBesok = Carbon::tomorrow()->format('d M');
         $tanggalLusa = Carbon::now()->addDays(2)->format('d M');
+
+        $mapel = MataPelajaran::where('guru_nuptk', $guru->nuptk)->first();
+        $jadwal = Jadwal::where('mata_pelajaran_id', $mapel->id)
+                    ->get()->groupBy(['kelas_id', 'jurusan_id']);
+        $kelas_id = [];
+        $jurusan_id = [];
+
+        foreach ($jadwal as $kelas => $jurusans) {
+            $kelas_id[] = $kelas;
+            foreach ($jurusans as $jurusan => $jadwals) {
+                $jurusan_id[] = $jurusan;
+            }
+        }
+
+        $kelas_id = array_unique($kelas_id);
+        $jurusan_id = array_unique($jurusan_id);
+
+        $siswa = Siswa::whereIn('kelas_id', $kelas_id)->whereIn('jurusan_id', $jurusan_id)->get();
+
+        $mapel = MataPelajaran::where('guru_nuptk', $guru->nuptk)->first();
+        $jadwals = Jadwal::where('mata_pelajaran_id', $mapel->id)
+                    ->orderBy('hari')
+                    ->orderBy('jam_mulai')
+                    ->get();
+
+        $materi = DB::table('materis')
+                ->join('e-books', 'materis.ebook_id', '=', 'e-books.id')
+                ->where('e-books.guru_nuptk', $guru->nuptk)
+                ->select('materis.*', 'e-books.file as file', 'e-books.judul as judul')->get();
+
+        $ebook = DB::table('e-books')
+                ->join('gurus', 'e-books.guru_nuptk', '=', 'gurus.nuptk')
+                ->where('gurus.nuptk', $guru->nuptk)
+                ->select('e-books.*', 'gurus.nama as guru_nama')->get();
+
+        $kuis = DB::table('kuis')
+            ->join('pertemuans', 'kuis.pertemuan_id', '=', 'pertemuans.id')
+            ->join('gurus', 'kuis.guru_nuptk', '=', 'gurus.nuptk')
+            ->join('jadwals', 'pertemuans.jadwal_id', '=', 'jadwals.id')
+            ->join('kelas', 'jadwals.kelas_id', '=', 'kelas.id')
+            ->join('jurusans', 'jadwals.jurusan_id', '=', 'jurusans.id')
+            ->where('gurus.nuptk', $guru->nuptk)
+            ->select('kuis.*', 'pertemuans.pertemuan as pertemuan', 'gurus.nama as guru_nama', 'kelas.nama as kelas_nama', 'jurusans.nama as jurusan_nama')->get();
+
+        $tugas =  DB::table('tugas')
+            ->join('pertemuans', 'tugas.pertemuan_id', '=', 'pertemuans.id')
+            ->join('gurus', 'tugas.guru_nuptk', '=', 'gurus.nuptk')
+            ->join('jadwals', 'pertemuans.jadwal_id', '=', 'jadwals.id')
+            ->join('kelas', 'jadwals.kelas_id', '=', 'kelas.id')
+            ->join('jurusans', 'jadwals.jurusan_id', '=', 'jurusans.id')
+            ->join('mata_pelajarans', 'jadwals.mata_pelajaran_id', '=', 'mata_pelajarans.id')
+            ->where('gurus.nuptk', $guru->nuptk)
+            ->select('tugas.*', 'pertemuans.pertemuan as pertemuan', 'gurus.nama as guru_nama', 'kelas.nama as kelas_nama', 'jurusans.nama as jurusan_nama', 'mata_pelajarans.nama as mapel')->get();
+
+        $hariini = DB::table('pertemuans')
+            ->join('materis', 'pertemuans.materi_id', '=', 'materis.id')
+            ->join('jadwals', 'pertemuans.jadwal_id', '=', 'jadwals.id')
+            ->join('kelas', 'jadwals.kelas_id', '=', 'kelas.id')
+            ->join('jurusans', 'jadwals.jurusan_id', '=', 'jurusans.id')
+            ->join('e-books', 'materis.ebook_id', '=', 'e-books.id')
+            ->join('gurus', 'e-books.guru_nuptk', '=', 'gurus.nuptk')
+            ->where('gurus.nuptk', $guru->nuptk)
+            ->where('pertemuans.tanggal', Carbon::today())
+            ->select('pertemuans.*', 'gurus.nama as guru_nama', 'kelas.nama as kelas_nama', 'jurusans.nama as jurusan_nama', 'materis.nama as materi_nama', 'jadwals.jam_mulai as jam_mulai', 'jadwals.jam_selesai as jam_selesai')->get();
         return view("guru.dashboard", [
             'title' => 'Dashboard Guru',
             'besok' => $besok,
             'lusa' => $lusa,
             'tanggalBesok'=> $tanggalBesok,
             'tanggalLusa'=> $tanggalLusa,
-            'pertemuan'=> $pertemuan
-
+            'pertemuan'=> $pertemuan,
+            'siswa'=> $siswa,
+            'jadwal'=> $jadwal,
+            'jadwals'=> $jadwals,
+            'materi'=> $materi,
+            'ebook'=> $ebook,
+            'kuis'=> $kuis,
+            'tugas'=> $tugas,
+            'hariini'=> $hariini,
         ]);
     }
 

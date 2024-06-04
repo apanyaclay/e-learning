@@ -8,7 +8,8 @@
                         <div class="page-sub-header">
                             <h3 class="page-title">Detail Siswa</h3>
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="{{ route('guru/siswa/profile', $siswa->nisn) }}">Siswa</a></li>
+                                <li class="breadcrumb-item"><a
+                                        href="{{ route('guru/siswa/profile', $siswa->nisn) }}">Siswa</a></li>
                                 <li class="breadcrumb-item active">Detail Siswa</li>
                             </ul>
                         </div>
@@ -38,13 +39,6 @@
                                                 <h4>{{ $siswa->nama }}</h4>
                                                 <h5>{{ $siswa->kelas->nama }} {{ $siswa->jurusan->nama }}</h5>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-4 d-flex align-items-center">
-                                    </div>
-                                    <div class="col-lg-4 col-md-4 d-flex align-items-center">
-                                        <div class="follow-btn-group">
-                                            <button type="submit" class="btn btn-info message-btns">Message</button>
                                         </div>
                                     </div>
                                 </div>
@@ -79,7 +73,8 @@
                                         </div>
                                         <div class="personal-activity">
                                             <div class="personal-icons">
-                                                <img src="{{ URL::to('assets/img/icons/buliding-icon.svg') }}" alt="">
+                                                <img src="{{ URL::to('assets/img/icons/buliding-icon.svg') }}"
+                                                    alt="">
                                             </div>
                                             <div class="views-personal">
                                                 <h4>Jurusan </h4>
@@ -118,7 +113,8 @@
                                             </div>
                                             <div class="views-personal">
                                                 <h4>Tanggal Lahir</h4>
-                                                <h5>{{ \Carbon\Carbon::parse($siswa->tanggal_lahir)->format('d M Y') }}</h5>
+                                                <h5>{{ \Carbon\Carbon::parse($siswa->tanggal_lahir)->format('d M Y') }}
+                                                </h5>
                                             </div>
                                         </div>
                                         <div class="personal-activity">
@@ -144,20 +140,20 @@
                             </div>
                         </div>
                         <div class="col-lg-8">
-                        <div class="student-personals-grp">
-                            <div class="card mb-0">
-                                <div class="card-body">
-                                    <div class="heading-detail">
-                                        <h4>About Me</h4>
-                                    </div>
-                                    <div class="hello-park">
-                                        <h5>Hello, saya {{$siswa->nama}}</h5>
-                                        <p>{{$siswa->tentang}}. </p>
+                            <div class="student-personals-grp">
+                                <div class="card mb-0">
+                                    <div class="card-body">
+                                        <div class="heading-detail">
+                                            <h4>About Me</h4>
+                                        </div>
+                                        <div class="hello-park">
+                                            <h5>Hello, saya {{ $siswa->nama }}</h5>
+                                            <p>{{ $siswa->tentang }}. </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                     </div>
                 </div>
             </div>

@@ -46,9 +46,9 @@
                                                             <th>Tenggat</th>
                                                             <th>Durasi</th>
                                                             <th>Guru</th>
+                                                            <th>Mapel</th>
                                                             <th>Pertemuan</th>
                                                             <th>Kelas</th>
-                                                            <th>Jurusan</th>
                                                             <th class="text-end">Aksi</th>
                                                         </tr>
                                                     </thead>
@@ -129,16 +129,16 @@
                         name: 'guru',
                     },
                     {
+                        data: 'mapel',
+                        name: 'mapel',
+                    },
+                    {
                         data: 'pertemuan',
                         name: 'pertemuan',
                     },
                     {
                         data: 'kelas',
                         name: 'kelas',
-                    },
-                    {
-                        data: 'jurusan',
-                        name: 'jurusan',
                     },
                     {
                         data: 'modify',

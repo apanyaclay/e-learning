@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Absensi;
 use App\Models\Admin;
 use App\Models\Ebook;
 use App\Models\Guru;
@@ -13,7 +14,9 @@ use App\Models\Kuis;
 use App\Models\MataPelajaran;
 use App\Models\Materi;
 use App\Models\Pertemuan;
+use App\Models\Setting;
 use App\Models\Siswa;
+use App\Models\Tugas;
 use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
@@ -37,10 +40,8 @@ class AdminController extends Controller
         $ebook = Ebook::all()->count();
         $pertemuan = Pertemuan::all()->count();
         $jadwal = Jadwal::all()->count();
-
-        $boysData = [420, 532, 516, 575, 519, 517, 454, 392, 262, 383, 446, 551];
-        $girlsData = [336, 612, 344, 647, 345, 563, 256, 344, 323, 300, 455, 456];
-        $years = [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024];
+        $absensi = Absensi::all()->count();
+        $tugas = Tugas::all()->count();
 
         return view("admin.dashboard", [
             'title' => 'Dashboard Admin',
@@ -48,15 +49,14 @@ class AdminController extends Controller
             'kelas' => $kelas,
             'jurusan' => $jurusan,
             'guru' => $guru,
-            'boysData' => $boysData,
-            'girlsData' => $girlsData,
-            'years' => $years,
             'mapel'=> $mapel,
             'kuis'=> $kuis,
             'materi'=> $materi,
             'ebook'=> $ebook,
             'pertemuan'=> $pertemuan,
             'jadwal'=> $jadwal,
+            'absensi'=> $absensi,
+            'tugas'=> $tugas,
         ]);
     }
 
@@ -162,8 +162,44 @@ class AdminController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function setting()
     {
-        //
+        $settings = Setting::all()->keyBy('key');
+        return view('admin.setting', [
+            'title'=> 'Setting',
+            'settings'=> $settings
+        ]);
+    }
+    public function setting_update(Request $request)
+    {
+        $request->validate([
+            'website_name' => 'required|string',
+            'logo' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'favicon' => 'image|mimes:png,ico|max:1024',
+            // Add other validations as necessary
+        ]);
+
+        $settings = $request->only([
+            'website_name',
+            'logo',
+            'favicon',
+            // Add other settings keys here
+        ]);
+
+        foreach ($settings as $key => $value) {
+            Setting::updateOrCreate(['key' => $key], ['value' => $value]);
+        }
+
+        if ($request->hasFile('logo')) {
+            $logoPath = $request->file('logo')->store('public/logo');
+            Setting::updateOrCreate(['key' => 'logo'], ['value' => $logoPath]);
+        }
+
+        if ($request->hasFile('favicon')) {
+            $faviconPath = $request->file('favicon')->store('public/favicon');
+            Setting::updateOrCreate(['key' => 'favicon'], ['value' => $faviconPath]);
+        }
+        Toastr::success('Settings updated successfully!','success');
+        return redirect()->back();
     }
 }

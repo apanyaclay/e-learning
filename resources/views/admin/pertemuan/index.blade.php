@@ -44,9 +44,9 @@
                                                             <th>ID</th>
                                                             <th>Pertemuan</th>
                                                             <th>Kelas</th>
-                                                            <th>Jurusan</th>
                                                             <th>Materi</th>
                                                             <th>Guru</th>
+                                                            <th>Mapel</th>
                                                             <th>Tanggal</th>
                                                             <th class="text-end">Aksi</th>
                                                         </tr>
@@ -120,16 +120,16 @@
                         name: 'kelas',
                     },
                     {
-                        data: 'jurusan',
-                        name: 'jurusan',
-                    },
-                    {
                         data: 'materi',
                         name: 'materi',
                     },
                     {
                         data: 'guru',
                         name: 'guru',
+                    },
+                    {
+                        data: 'mapel',
+                        name: 'mapel',
                     },
                     {
                         data: 'tanggal',

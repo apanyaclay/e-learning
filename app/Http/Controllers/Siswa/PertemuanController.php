@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Siswa;
 
 use App\Http\Controllers\Controller;
 use App\Models\Absensi;
+use App\Models\Materi;
 use App\Models\Pertemuan;
 use App\Models\Post;
 use App\Models\Siswa;
@@ -58,11 +59,13 @@ class PertemuanController extends Controller
     public function show($id)
     {
         $pertemuan = Pertemuan::find($id);
+        $materi = Materi::find($pertemuan->materi_id);
         $absensi = Absensi::where('pertemuan_id', $id)->get();
         return view('siswa.pertemuan-view', [
             'title'=> 'Detail Pertemuan',
             'pertemuan'=> $pertemuan,
-            'absensi'=> $absensi
+            'absensi'=> $absensi,
+            'materi'=> $materi,
         ]);
     }
 
@@ -85,10 +88,13 @@ class PertemuanController extends Controller
     public function fetchPosts($pertemuan_id)
     {
         $posts = DB::table('posts')
-            ->join('users','posts.user_id','=','users.id')
+            ->join('users', 'posts.user_id', '=', 'users.id')
+            ->leftJoin('siswas', 'users.id', '=', 'siswas.user_id')
+            ->leftJoin('gurus', 'users.id', '=', 'gurus.user_id')
+            ->leftJoin('admins', 'users.id', '=', 'admins.user_id')
             ->where('posts.pertemuan_id', $pertemuan_id)
-            ->select('posts.*', 'users.username as username')->get();
-        // $posts = Post::where('pertemuan_id', $pertemuan_id)->get();
+            ->select('posts.*', 'users.username as username', 'admins.foto as admin_foto', 'siswas.foto as siswa_foto', 'gurus.foto as guru_foto', 'users.role as user_type')
+            ->get();
         return response()->json($posts);
     }
 

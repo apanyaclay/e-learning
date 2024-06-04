@@ -84,25 +84,6 @@
                                     </div>
                                     <div class="col-12 col-sm-4">
                                         <div class="form-group local-forms">
-                                            <label>Guru <span class="login-danger">*</span></label>
-                                            <select class="form-control select @error('guru_nuptk') is-invalid @enderror"
-                                                name="guru_nuptk">
-                                                <option selected disabled>Silahkan pilih Guru </option>
-                                                @foreach ($guru as $value)
-                                                    <option
-                                                        value="{{ $value->nuptk }}"{{ $kuis->guru_nuptk == $value->nuptk ? 'selected' : '' }}>
-                                                        {{ $value->nama }}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('guru_nuptk')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-sm-4">
-                                        <div class="form-group local-forms">
                                             <label>Pertemuan <span class="login-danger">*</span></label>
                                             <select class="form-control select @error('pertemuan_id') is-invalid @enderror"
                                                 name="pertemuan_id">
@@ -110,7 +91,7 @@
                                                 @foreach ($pertemuan as $value)
                                                     <option
                                                         value="{{ $value->id }}"{{ $kuis->pertemuan_id == $value->id ? 'selected' : '' }}>
-                                                        {{ $value->pertemuan }} - {{ $value->jadwal->kelas->nama }} - {{ $value->jadwal->jurusan->nama }} - {{ $value->created_at->format('d M Y') }}</option>
+                                                        {{ $value->pertemuan }} - {{ $value->jadwal->kelas->nama }} {{ $value->jadwal->jurusan->nama }} - {{ $value->jadwal->mataPelajaran->guru->nama }} - {{ $value->jadwal->mataPelajaran->nama }} - {{ \Carbon\Carbon::parse($value->tanggal)->format('d M Y') }}</option>
                                                 @endforeach
                                             </select>
                                             @error('pertemuan_id')

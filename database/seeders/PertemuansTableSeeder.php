@@ -24,31 +24,31 @@ class PertemuansTableSeeder extends Seeder
             "pertemuan"=> "1",
             "materi_id"=> "2",
             "jadwal_id"=> "2",
-            "tanggal"=> Carbon::tomorrow(),
+            "tanggal"=> Carbon::today(),
         ]);
         Pertemuan::create([
             "pertemuan"=> "1",
             "materi_id"=> "3",
             "jadwal_id"=> "3",
-            "tanggal"=> Carbon::now()->addDays(2),
+            "tanggal"=> Carbon::today(),
         ]);
         Pertemuan::create([
             "pertemuan"=> "1",
             "materi_id"=> "4",
             "jadwal_id"=> "4",
-            "tanggal"=> Carbon::now()->addDays(3),
+            "tanggal"=> Carbon::tomorrow(),
         ]);
         Pertemuan::create([
             "pertemuan"=> "1",
             "materi_id"=> "5",
             "jadwal_id"=> "5",
-            "tanggal"=> Carbon::now()->addDays(4),
+            "tanggal"=> Carbon::tomorrow(),
         ]);
         Pertemuan::create([
             "pertemuan"=> "1",
             "materi_id"=> "6",
             "jadwal_id"=> "6",
-            "tanggal"=> Carbon::now()->addDays(5),
+            "tanggal"=> Carbon::tomorrow(),
         ]);
     }
 }

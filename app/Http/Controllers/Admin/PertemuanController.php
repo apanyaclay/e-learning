@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Absensi;
 use App\Models\Jadwal;
 use App\Models\Materi;
 use App\Models\Pertemuan;
+use App\Models\Post;
 use Brian2694\Toastr\Facades\Toastr;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class PertemuanController extends Controller
@@ -44,8 +47,9 @@ class PertemuanController extends Controller
                 ->join('kelas', 'jadwals.kelas_id', '=', 'kelas.id')
                 ->join('jurusans', 'jadwals.jurusan_id', '=', 'jurusans.id')
                 ->join('e-books', 'materis.ebook_id', '=', 'e-books.id')
+                ->join('mata_pelajarans', 'jadwals.mata_pelajaran_id', '=', 'mata_pelajarans.id')
                 ->join('gurus', 'e-books.guru_nuptk', '=', 'gurus.nuptk')
-                ->select('pertemuans.*', 'materis.nama as materi_nama', 'kelas.nama as kelas_nama', 'jurusans.nama as jurusan_nama', 'gurus.nama as guru_nama');
+                ->select('pertemuans.*', 'materis.nama as materi_nama', 'kelas.nama as kelas_nama', 'jurusans.nama as jurusan_nama', 'gurus.nama as guru_nama', 'mata_pelajarans.nama as mapel');
         $totalRecords = $data->count();
 
         $totalRecordsWithFilter = $data->where(function ($query) use ($searchValue) {
@@ -74,6 +78,9 @@ class PertemuanController extends Controller
             $modify = '
                 <td class="text-end">
                     <div class="actions">
+                    <a href="'.url('admin/pertemuan/view/'.$record->id).'" class="btn btn-sm bg-success-light me-2">
+                            <i class="fe fe-eye"></i>
+                        </a>
                         <a href="'.url('admin/pertemuan/edit/'.$record->id).'" class="btn btn-sm bg-danger-light">
                             <i class="far fa-edit me-2"></i>
                         </a>
@@ -87,10 +94,10 @@ class PertemuanController extends Controller
             $data_arr [] = [
                 "id"                => $record->id,
                 "pertemuan"         => $record->pertemuan,
-                "kelas"             => $record->kelas_nama,
-                "jurusan"           => $record->jurusan_nama,
+                "kelas"             => $record->kelas_nama.'-'.$record->jurusan_nama,
                 "materi"            => $record->materi_nama,
                 "guru"              => $record->guru_nama,
+                "mapel"             => $record->mapel,
                 "tanggal"           => Carbon::parse($record->tanggal)->format('d m Y'),
                 "modify"            => $modify,
             ];
@@ -151,9 +158,48 @@ class PertemuanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $pertemuan = Pertemuan::find($id);
+        $materi = Materi::find($pertemuan->materi_id);
+        $absensi = Absensi::where('pertemuan_id', $id)->get();
+        $posts = Post::where('pertemuan_id', $id)->orderBy('created_at', 'desc')->get();
+        return view('admin.pertemuan.view', [
+            'title'=> 'Detail Pertemuan',
+            'pertemuan'=> $pertemuan,
+            'posts' => $posts,
+            'absensi'=> $absensi,
+            'materi'=> $materi
+        ]);
+    }
+
+    public function show_store(Request $request)
+    {
+        $request->validate([
+            'message' => 'required|string|max:255',
+            'pertemuan_id' => 'required|exists:pertemuans,id',
+        ]);
+
+        Post::create([
+            'user_id' => Auth::id(),
+            'pertemuan_id' => $request->pertemuan_id,
+            'message' => $request->message,
+        ]);
+        Toastr::success('Message sent successfully!','success');
+        return redirect()->back();
+    }
+
+    public function fetchPosts($pertemuan_id)
+    {
+        $posts = DB::table('posts')
+            ->join('users', 'posts.user_id', '=', 'users.id')
+            ->leftJoin('siswas', 'users.id', '=', 'siswas.user_id')
+            ->leftJoin('gurus', 'users.id', '=', 'gurus.user_id')
+            ->leftJoin('admins', 'users.id', '=', 'admins.user_id')
+            ->where('posts.pertemuan_id', $pertemuan_id)
+            ->select('posts.*', 'users.username as username', 'admins.foto as admin_foto', 'siswas.foto as siswa_foto', 'gurus.foto as guru_foto', 'users.role as user_type')
+            ->get();
+        return response()->json($posts);
     }
 
     /**
@@ -196,9 +242,6 @@ class PertemuanController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Request $request)
     {
         DB::beginTransaction();

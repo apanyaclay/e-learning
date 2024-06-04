@@ -152,6 +152,25 @@
                                             @enderror
                                         </div>
                                     </div>
+                                    <div class="col-12 col-sm-4">
+                                        <div class="form-group local-forms">
+                                            <label>Tahun Ajaran <span class="login-danger">*</span></label>
+                                            <select class="form-control select @error('tahun_ajaran') is-invalid @enderror"
+                                                name="tahun_ajaran">
+                                                <option selected disabled>Silahkan pilih Tahun Ajaran </option>
+                                                @foreach ($ta as $value)
+                                                    <option
+                                                        value="{{ $value->id }}"{{ $jadwal->tahun_ajaran_id == $value->id ? 'selected' : '' }}>
+                                                        {{ $value->tahun_ajaran }} - {{ $value->semester }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('tahun_ajaran')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
                                     <div class="col-12">
                                         <div class="student-submit">
                                             <button type="submit" class="btn btn-primary">Edit</button>

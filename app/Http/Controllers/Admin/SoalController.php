@@ -3,6 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Jadwal;
+use App\Models\Jawaban;
+use App\Models\Kuis;
+use App\Models\Nilai;
+use App\Models\Pertemuan;
+use App\Models\Siswa;
 use App\Models\Soal;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
@@ -17,11 +23,20 @@ class SoalController extends Controller
     {
         $soal = Soal::where('kuis_id', $id)->get()->toArray();
         $totalBobot = Soal::where('kuis_id', $id)->sum('bobot');
+        $kuis = Kuis::find($id);
+        $pertemuan = Pertemuan::find($kuis->pertemuan_id);
+        $jadwal = Jadwal::find($pertemuan->jadwal_id);
+        $siswa = Siswa::where('kelas_id', $jadwal->kelas_id)->where('jurusan_id', $jadwal->jurusan_id)->get();
+        $nilai = Nilai::where('kuis_id', $id)->get()->keyBy('siswa_nisn');
+        $jumlahSudahMengerjakan = $nilai->count();
         return view('admin.soal.index', [
             'title'=> 'Lihat Kuis',
             'soal'=> $soal,
             'bobot'=> $totalBobot,
-            'id' => $id
+            'id' => $id,
+            'siswa'=> $siswa,
+            'nilai'=> $nilai,
+            'jumlahSudahMengerjakan' => $jumlahSudahMengerjakan,
         ]);
     }
 
@@ -94,9 +109,24 @@ class SoalController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id, $nisn)
     {
-        //
+        $kuis = Kuis::findOrFail($id);
+        $siswa = Siswa::findOrFail($nisn);
+        $jawaban = Jawaban::where('siswa_nisn', $nisn)->whereIn('soal_id', Soal::where('kuis_id', $id)->pluck('id'))->get();
+        foreach ($jawaban as $jawab) {
+            $soal = Soal::findOrFail($jawab->soal_id);
+            $jawab->benar = $jawab->jawaban == $soal->opsi_benar;
+            $nilai = $jawab->benar ? $jawab->soal->bobot : 0;
+        }
+        $nilai = Nilai::where('kuis_id', $id)->where('siswa_nisn', $nisn)->firstOrFail();
+        return view('admin.kuis.hasil', [
+            'title'=> 'Hasil Kuis',
+            'kuis' => $kuis,
+            'siswa' => $siswa,
+            'jawaban' => $jawaban,
+            'totalNilai'=> $nilai->nilai
+        ]);
     }
 
     /**

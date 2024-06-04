@@ -8,6 +8,7 @@ use App\Models\Guru;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class EbookController extends Controller
 {
@@ -59,7 +60,14 @@ class EbookController extends Controller
         $data_arr = [];
 
         foreach ($records as $record) {
-
+            $extension = pathinfo($record->file, PATHINFO_EXTENSION);
+            $filenameWithExtension = $record->judul . '.' . $extension;
+            $files = '
+            <td>
+                <a href="'.Storage::url('ebook/'.$record->file).'" download="'.$filenameWithExtension.'" target="_blank" class="btn
+                    btn-primary btn-sm">Download</a>
+            </td>
+            ';
             $modify = '
                 <td class="text-end">
                     <div class="actions">
@@ -77,7 +85,7 @@ class EbookController extends Controller
                 "id"         => $record->id,
                 "judul"       => $record->judul,
                 "guru"       => $record->guru_nama,
-                "file"       => $record->file,
+                "file"       => $files,
                 "modify"     => $modify,
             ];
         }

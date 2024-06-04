@@ -7,6 +7,7 @@ use App\Models\Jadwal;
 use App\Models\Jurusan;
 use App\Models\Kelas;
 use App\Models\MataPelajaran;
+use App\Models\TahunAjaran;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -119,11 +120,13 @@ class JadwalController extends Controller
         $kelas = Kelas::all();
         $jurusan = Jurusan::all();
         $mapel = MataPelajaran::all();
+        $ta = TahunAjaran::all();
         return view('admin.jadwal.add', [
             'title' => 'Tambah Jadwal',
             'kelas' => $kelas,
             'jurusan' => $jurusan,
             'mapel'=> $mapel,
+            'ta'=> $ta
         ]);
     }
 
@@ -139,6 +142,7 @@ class JadwalController extends Controller
             'hari'=> 'required',
             'jam_mulai'=> 'required',
             'jam_selesai'=> 'required',
+            'tahun_ajaran'=> 'required',
         ]);
         DB::beginTransaction();
         try {
@@ -149,6 +153,7 @@ class JadwalController extends Controller
                 'hari'=> $request->hari,
                 'jam_mulai'=> $request->jam_mulai,
                 'jam_selesai'=> $request->jam_selesai,
+                'tahun_ajaran_id'=> $request->tahun_ajaran,
             ]);
             $jadwal->save();
             DB::commit();
@@ -178,12 +183,14 @@ class JadwalController extends Controller
         $kelas = Kelas::all();
         $jurusan = Jurusan::all();
         $mapel = MataPelajaran::all();
+        $ta = TahunAjaran::all();
         return view('admin.jadwal.edit', [
             'title' => 'Edit Jadwal',
             'jadwal' => $jadwal,
             'kelas' => $kelas,
             'jurusan' => $jurusan,
             'mapel' => $mapel,
+            'ta' => $ta,
         ]);
     }
 
@@ -201,6 +208,7 @@ class JadwalController extends Controller
             $jadwal->hari = $request->hari;
             $jadwal->jam_mulai = $request->jam_mulai;
             $jadwal->jam_selesai = $request->jam_selesai;
+            $jadwal->tahun_ajaran_id = $request->tahun_ajaran;
             $jadwal->save();
             DB::commit();
             Toastr::success('Jadwal berhasil diubah','success');

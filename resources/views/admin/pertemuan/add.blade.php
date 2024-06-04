@@ -71,7 +71,7 @@
                                                 @foreach ($jadwal as $value)
                                                     <option value="{{ $value->id }}"
                                                         {{ old('jadwal_id') == $value->id ? 'selected' : '' }}>
-                                                        {{ $value->kelas->nama }} - {{ $value->jurusan->nama }} - {{ $value->mataPelajaran->nama }} - {{ $value->hari }}</option>
+                                                        {{ $value->kelas->nama }} - {{ $value->jurusan->nama }} - {{ $value->mataPelajaran->guru->nama }} - {{ $value->mataPelajaran->nama }} - {{ $value->hari }}</option>
                                                 @endforeach
                                             </select>
                                             @error('jadwal_id')

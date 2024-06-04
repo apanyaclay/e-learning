@@ -48,7 +48,6 @@
                                                             <th>Jenis Kelamin</th>
                                                             <th>Tempat Lahir</th>
                                                             <th>Agama</th>
-                                                            <th>Foto</th>
                                                             <th>Tanggal Lahir</th>
                                                             <th class="text-end">Aksi</th>
                                                         </tr>
@@ -136,10 +135,6 @@
                     {
                         data: 'agama',
                         name: 'agama',
-                    },
-                    {
-                        data: 'foto',
-                        name: 'foto',
                     },
                     {
                         data: 'tanggal_lahir',

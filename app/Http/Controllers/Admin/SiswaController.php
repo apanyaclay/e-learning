@@ -8,6 +8,7 @@ use App\Models\Kelas;
 use App\Models\Siswa;
 use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -100,7 +101,7 @@ class SiswaController extends Controller
                 "kelas_id"       => $record->kelas_nama,
                 "jurusan_id"       => $record->jurusan_nama,
                 "jenis_kelamin"       => $record->jenis_kelamin,
-                "tanggal_lahir"       => $record->tanggal_lahir,
+                "tanggal_lahir"       => Carbon::parse($record->tanggal_lahir)->format('d-M-Y'),
                 "tempat_lahir"       => $record->tempat_lahir,
                 "agama"       => $record->agama,
                 "alamat"       => $record->alamat,

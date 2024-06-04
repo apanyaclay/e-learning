@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\Guru;
 use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class GuruController extends Controller
 {
@@ -62,6 +64,17 @@ class GuruController extends Controller
 
         foreach ($records as $record) {
 
+            $nama = '
+                <td>
+                    <h2 class="table-avatar">
+                        <a href="'.url('admin/guru/profile/'.$record->nuptk).'" class="avatar-sm me-2">
+                            <img class="avatar-img rounded-circle avatar" src="' . Storage::url('foto/' . $record->foto) . '" alt="">
+                        </a>
+                        <a href="'.url('admin/guru/profile/'.$record->nuptk).'">' . $record->nama . '</a>
+                    </h2>
+                </td>
+            ';
+
             $modify = '
                 <td class="text-end">
                     <div class="actions">
@@ -77,14 +90,13 @@ class GuruController extends Controller
 
             $data_arr [] = [
                 "nuptk"             => $record->nuptk,
-                "nama"              => $record->nama,
+                "nama"              => $nama,
                 "alamat"            => $record->alamat,
                 "no_hp"             => $record->no_hp,
                 "jenis_kelamin"     => $record->jenis_kelamin,
                 "tempat_lahir"      => $record->tempat_lahir,
                 "agama"             => $record->agama,
-                "foto"              => $record->foto,
-                "tanggal_lahir"     => $record->tanggal_lahir,
+                "tanggal_lahir"     => Carbon::parse($record->tanggal_lahir)->format('d-M-Y'),
                 "modify"            => $modify,
             ];
         }

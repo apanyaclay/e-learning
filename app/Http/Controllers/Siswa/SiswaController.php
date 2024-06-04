@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Siswa;
 
 use App\Http\Controllers\Controller;
+use App\Models\Absensi;
 use App\Models\Jadwal;
+use App\Models\Jurusan;
 use App\Models\Kuis;
 use App\Models\Pertemuan;
 use App\Models\Siswa;
@@ -31,8 +33,23 @@ class SiswaController extends Controller
         ->where('jurusans.id', $siswa->jurusan_id)
         ->select('kuis.*', 'gurus.nama as guru_nama', 'mata_pelajarans.nama as mapel', 'pertemuans.pertemuan as pertemuan_nama', 'materis.nama as materi_nama')->get()->count();
         $jadwal = Jadwal::where('kelas_id', $siswa->kelas_id)
-            ->where('jurusan_id', $siswa->jurusan_id)->get()->groupBy('mata_pelajaran_id')->count();
+            ->where('jurusan_id', $siswa->jurusan_id)->get()->count();
 
+        $mapel = Jadwal::where('kelas_id', $siswa->kelas_id)
+        ->where('jurusan_id', $siswa->jurusan_id)->get()->groupBy('mata_pelajaran_id')->count();
+        $kelas = Siswa::where('kelas_id', $siswa->kelas_id)->get()->count();
+        $jurusan = Jurusan::all()->count();
+        $tugas = DB::table('tugas')
+            ->join('gurus', 'tugas.guru_nuptk', '=', 'gurus.nuptk')
+            ->join('pertemuans', 'tugas.pertemuan_id', '=', 'pertemuans.id')
+            ->join('jadwals', 'pertemuans.jadwal_id', '=', 'jadwals.id')
+            ->join('materis', 'pertemuans.materi_id', '=', 'materis.id')
+            ->join('kelas', 'jadwals.kelas_id', '=', 'kelas.id')
+            ->join('jurusans', 'jadwals.jurusan_id', '=', 'jurusans.id')
+            ->join('mata_pelajarans', 'jadwals.mata_pelajaran_id', '=', 'mata_pelajarans.id')
+            ->where('kelas.id', $siswa->kelas_id)
+            ->where('jurusans.id', $siswa->jurusan_id)
+            ->select('tugas.*', 'gurus.nama as guru_nama', 'mata_pelajarans.nama as mapel', 'pertemuans.pertemuan as pertemuan_nama', 'materis.nama as materi_nama')->get()->count();
         $pertemuan = DB::table('pertemuans')
             ->join('jadwals', 'pertemuans.jadwal_id', 'jadwals.id')
             ->join('materis', 'pertemuans.materi_id', 'materis.id')
@@ -54,7 +71,7 @@ class SiswaController extends Controller
             ->where('kelas.id', $siswa->kelas_id)
             ->where('jurusans.id', $siswa->jurusan_id)
             ->where('pertemuans.tanggal', Carbon::today())
-            ->select('pertemuans.*', 'gurus.nama as guru_nama', 'kelas.nama as kelas_nama', 'jurusans.nama as jurusan_nama', 'mata_pelajarans.nama as mapel_nama', 'materis.nama as materi_nama', 'jadwals.jam_mulai as jam_mulai', 'jadwals.jam_selesai as jam_selesai')->get();
+            ->select('pertemuans.*', 'gurus.nama as guru_nama', 'kelas.nama as kelas_nama', 'jurusans.nama as jurusan_nama', 'mata_pelajarans.nama as mapel_nama', 'materis.nama as materi_nama', 'jadwals.jam_mulai as jam_mulai', 'jadwals.jam_selesai as jam_selesai')->get()->sortBy('jam_mulai');
 
         $besok = DB::table('pertemuans')
             ->join('jadwals', 'pertemuans.jadwal_id', 'jadwals.id')
@@ -81,31 +98,56 @@ class SiswaController extends Controller
             ->select('pertemuans.*', 'gurus.nama as guru_nama', 'kelas.nama as kelas_nama', 'jurusans.nama as jurusan_nama', 'mata_pelajarans.nama as mapel_nama', 'materis.nama as materi_nama', 'jadwals.jam_mulai as jam_mulai', 'jadwals.jam_selesai as jam_selesai')->get();
         $tanggalBesok = Carbon::tomorrow()->format('d M');
         $tanggalLusa = Carbon::now()->addDays(2)->format('d M');
-        $datahariIni = [];
-        foreach ($hariIni as $item) {
-            $datahariIni[] = [
-                'id' => $item->id,
-                'pertemuan' => $item->pertemuan,
-                'guru_nama' => $item->guru_nama,
-                'kelas_nama' => $item->kelas_nama,
-                'jurusan_nama' => $item->jurusan_nama,
-                'mapel_nama' => $item->mapel_nama,
-                'materi_nama' => $item->materi_nama,
-                'tanggal' => $item->tanggal,
-                'jam_mulai' => $item->jam_mulai,
-                'jam_selesai' => $item->jam_selesai,
-            ];
-        }
+        $absensi = Absensi::all()->keyBy(function ($item) {
+            return $item['siswa_nisn'] . '-' . $item['pertemuan_id'];
+        });
+        $absen = Absensi::where('siswa_nisn', $siswa->nisn)->get()->count();
+
+
+        $kusin = DB::table('kuis')
+            ->join('gurus', 'kuis.guru_nuptk', '=', 'gurus.nuptk')
+            ->join('pertemuans', 'kuis.pertemuan_id', '=', 'pertemuans.id')
+            ->join('jadwals', 'pertemuans.jadwal_id', '=', 'jadwals.id')
+            ->join('materis', 'pertemuans.materi_id', '=', 'materis.id')
+            ->join('kelas', 'jadwals.kelas_id', '=', 'kelas.id')
+            ->join('jurusans', 'jadwals.jurusan_id', '=', 'jurusans.id')
+            ->join('mata_pelajarans', 'jadwals.mata_pelajaran_id', '=', 'mata_pelajarans.id')
+            ->where('kelas.id', $siswa->kelas_id)
+            ->where('jurusans.id', $siswa->jurusan_id)
+            ->where('kuis.tenggat', '>=',Carbon::now())
+            ->select('kuis.*', 'gurus.nama as guru_nama', 'mata_pelajarans.nama as mapel', 'pertemuans.pertemuan as pertemuan_nama', 'materis.nama as materi_nama')->get();
+
+        $tugasin = DB::table('tugas')
+            ->join('gurus', 'tugas.guru_nuptk', '=', 'gurus.nuptk')
+            ->join('pertemuans', 'tugas.pertemuan_id', '=', 'pertemuans.id')
+            ->join('jadwals', 'pertemuans.jadwal_id', '=', 'jadwals.id')
+            ->join('materis', 'pertemuans.materi_id', '=', 'materis.id')
+            ->join('kelas', 'jadwals.kelas_id', '=', 'kelas.id')
+            ->join('jurusans', 'jadwals.jurusan_id', '=', 'jurusans.id')
+            ->join('mata_pelajarans', 'jadwals.mata_pelajaran_id', '=', 'mata_pelajarans.id')
+            ->where('kelas.id', $siswa->kelas_id)
+            ->where('jurusans.id', $siswa->jurusan_id)
+            ->where('tugas.tenggat', '>=',Carbon::now())
+            ->select('tugas.*', 'gurus.nama as guru_nama', 'mata_pelajarans.nama as mapel', 'pertemuans.pertemuan as pertemuan_nama', 'materis.nama as materi_nama')->get();
         return view("siswa.dashboard", [
             'title' => 'Dashboard Siswa',
             'jadwal' => $jadwal,
             'kuis' => $kuis,
             'pertemuan' => $pertemuan,
-            'datahariIni' => $datahariIni,
+            'datahariIni' => $hariIni,
             'besok' => $besok,
             'lusa' => $lusa,
+            'siswa' => $siswa,
             'tanggalBesok' => $tanggalBesok,
             'tanggalLusa' => $tanggalLusa,
+            'absensi'=> $absensi,
+            'mapel' => $mapel,
+            'kelas' => $kelas,
+            'jurusan'=> $jurusan,
+            'absen'=> $absen,
+            'tugas'=> $tugas,
+            'kusin'=> $kusin,
+            'tugasin'=> $tugasin,
         ]);
     }
 

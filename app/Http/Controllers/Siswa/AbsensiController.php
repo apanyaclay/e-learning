@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Siswa;
 use App\Http\Controllers\Controller;
 use App\Models\Absensi;
 use App\Models\Siswa;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AbsensiController extends Controller
 {
@@ -50,9 +52,24 @@ class AbsensiController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id, $nisn)
     {
-        //
+        DB::beginTransaction();
+        try {
+            Absensi::updateOrCreate(['siswa_nisn' => $nisn, 'pertemuan_id' => $id],[
+                'siswa_nisn' => $nisn,
+                'pertemuan_id' => $id,
+                'status' => 'Hadir',
+            ]);
+            DB::commit();
+            Toastr::success('Anda berhasil melakukan absensi','success');
+           return redirect()->back();
+        } catch (\Exception $th) {
+           DB::rollBack();
+           Toastr::error('Anda gagal melakukan absensi','error');
+           return redirect()->back();
+        }
+
     }
 
     /**
